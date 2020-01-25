@@ -8,6 +8,19 @@ const CreateEventScreen = props => {
 
     const [renderModal, setRenderModal] = useState();
 
+    const [newEventName, setNewEventName] = useState();
+    const [newEventDate, setNewEventDate] = useState();
+    const [newEventSecret, setNewEventSecret] = useState();
+
+    const handleNameInputChange = (text) => {
+        setNewEventName(text);
+    }
+    const handleDateInputChange = (text) => {
+        setNewEventDate(text);
+    }
+    const handleSecretInputChange = (text) => {
+        setNewEventSecret(text);
+    }
 
     const displayRenderModal = (itemValue) => {
         switch (itemValue) {
@@ -15,9 +28,15 @@ const CreateEventScreen = props => {
                 setRenderModal(
                     <View style={styles.inputContainer}>
                         <Text>LECTURE OPTIONS</Text>
-                        <TextInput placeholder="Enter Lecture Name" />
-                        <TextInput placeholder="Enter Date" />
-                        <TextInput placeholder="Enter Secret Key" />
+                        <TextInput placeholder="Enter Lecture Name"
+                            onChangeText={handleNameInputChange}
+                            value={newEventName} />
+                        <TextInput placeholder="Enter Date"
+                            onChangeText={handleDateInputChange}
+                            value={newEventDate} />
+                        <TextInput placeholder="Enter Secret Key"
+                            onChangeText={handleSecretInputChange}
+                            value={newEventSecret} />
                     </View>
                 );
                 break;
@@ -76,9 +95,16 @@ const CreateEventScreen = props => {
             </Picker>
             {renderModal}
             <Button title="GENERATE QR CODE" onPress={() => {
-                props.navigation.navigate('QRCodeGenerated')
-            }} />
-            
+                props.navigation.navigate('QRCodeGenerated', {
+                    data1: newEventName,
+                    data2: newEventDate,
+                    data3: newEventSecret
+                });
+
+            }
+
+            } />
+
         </View>
     );
 };
@@ -106,3 +132,4 @@ const styles = StyleSheet.create({
 });
 
 export default CreateEventScreen;
+

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Button, Picker } from 'react-native';
-import { TextInput } from 'react-native-gesture-handler';
+import { View, Text, StyleSheet, Button, Picker, TextInput, Modal } from 'react-native';
+import EventDisplayModal from '../components/EventDisplayModal';
 
 const CreateEventScreen = props => {
 
@@ -11,6 +11,14 @@ const CreateEventScreen = props => {
     const [newEventName, setNewEventName] = useState();
     const [newEventDate, setNewEventDate] = useState();
     const [newEventSecret, setNewEventSecret] = useState();
+    const [disableResetButton, setDisableResetButton] = useState(true);
+    const [disableGenerateButton, setdisableGenerateButton] = useState(true);
+    const [displayModal, setDisplayModal] = useState({
+        'lecture': false,
+        'quiz': false,
+        'workshop': false,
+        'test': false
+    });
 
     const handleNameInputChange = (text) => {
         setNewEventName(text);
@@ -22,53 +30,54 @@ const CreateEventScreen = props => {
         setNewEventSecret(text);
     }
 
+    const checkValidInput = () => {
+        if (newEventName && newEventDate && newEventSecret) {
+            setdisableGenerateButton(false);
+            setDisableResetButton(false);
+        }
+    }
+
+    const handleResetButton = () => {
+        setNewEventName();
+        setNewEventDate();
+        setNewEventSecret();
+        setDisableResetButton(true);
+        setdisableGenerateButton(true);
+    }
+
     const displayRenderModal = (itemValue) => {
         switch (itemValue) {
             case 'lecture':
-                setRenderModal(
-                    <View style={styles.inputContainer}>
-                        <Text>LECTURE OPTIONS</Text>
-                        <TextInput placeholder="Enter Lecture Name"
-                            onChangeText={handleNameInputChange}
-                            value={newEventName} />
-                        <TextInput placeholder="Enter Date"
-                            onChangeText={handleDateInputChange}
-                            value={newEventDate} />
-                        <TextInput placeholder="Enter Secret Key"
-                            onChangeText={handleSecretInputChange}
-                            value={newEventSecret} />
-                    </View>
-                );
+                setDisplayModal({
+                    'lecture': true,
+                    'quiz': false,
+                    'workshop': false,
+                    'test': false
+                });
                 break;
             case 'quiz':
-                setRenderModal(
-                    <View style={styles.inputContainer}>
-                        <Text>QUIZ OPTIONS</Text>
-                        <TextInput placeholder="Enter Quiz Name" />
-                        <TextInput placeholder="Enter Date" />
-                        <TextInput placeholder="Enter Secret Key" />
-                    </View>
-                );
+                setDisplayModal({
+                    'lecture': false,
+                    'quiz': true,
+                    'workshop': false,
+                    'test': false
+                });
                 break;
             case 'test':
-                setRenderModal(
-                    <View style={styles.inputContainer}>
-                        <Text>TEST OPTIONS</Text>
-                        <TextInput placeholder="Enter Test Name" />
-                        <TextInput placeholder="Enter Date" />
-                        <TextInput placeholder="Enter Secret Key" />
-                    </View>
-                );
+                setDisplayModal({
+                    'lecture': false,
+                    'quiz': false,
+                    'workshop': false,
+                    'test': true
+                });
                 break;
             case 'workshop':
-                setRenderModal(
-                    <View style={styles.inputContainer}>
-                        <Text>WORKSHOP OPTIONS</Text>
-                        <TextInput placeholder="Enter WorkShop Name" />
-                        <TextInput placeholder="Enter Date" />
-                        <TextInput placeholder="Enter Secret Key" />
-                    </View>
-                );
+                setDisplayModal({
+                    'lecture': false,
+                    'quiz': false,
+                    'workshop': true,
+                    'test': false
+                });
                 break;
             default:
                 console.error('ERROR! BOY!');
@@ -93,17 +102,115 @@ const CreateEventScreen = props => {
                 <Picker.Item label="Test" value="test" />
                 <Picker.Item label="Work Shop" value="workshop" />
             </Picker>
-            {renderModal}
-            <Button title="GENERATE QR CODE" onPress={() => {
-                props.navigation.navigate('QRCodeGenerated', {
-                    data1: newEventName,
-                    data2: newEventDate,
-                    data3: newEventSecret
-                });
+            <View style={styles.displayInformationContainer}>
+                <Text>{newEventName ? `Event Name : ${newEventName}` : ''}</Text>
+                <Text>{newEventDate ? `Event Date : ${newEventDate}` : ''}</Text>
+                <Text>{newEventSecret ? `Event Secret : ${newEventSecret}` : ''}</Text>
+            </View>
+            {/* LECTURE OPTIONS */}
+            <EventDisplayModal
+                displayOption={displayModal.lecture}
+                title='Lecture'
+                handleNameInputChange={handleNameInputChange}
+                handleDateInputChange={handleDateInputChange}
+                handleSecretInputChange={handleSecretInputChange}
+                newEventName={newEventName}
+                newEventDate={newEventDate}
+                newEventSecret={newEventSecret}
+                onButtonPress={() => {
+                    setDisplayModal({
+                        'lecture': false,
+                        'quiz': false,
+                        'workshop': false,
+                        'test': false
+                    });
+                    setPickerSelection('Select Default');
+                    checkValidInput();
+                }}
+            />
+            {/* QUIZ OPTIONS */}
+            <EventDisplayModal
+                displayOption={displayModal.quiz}
+                title='Quiz'
+                handleNameInputChange={handleNameInputChange}
+                handleDateInputChange={handleDateInputChange}
+                handleSecretInputChange={handleSecretInputChange}
+                newEventName={newEventName}
+                newEventDate={newEventDate}
+                newEventSecret={newEventSecret}
+                onButtonPress={() => {
+                    setDisplayModal({
+                        'lecture': false,
+                        'quiz': false,
+                        'workshop': false,
+                        'test': false
+                    });
+                    setPickerSelection('Select Default');
+                    checkValidInput();
+                }} />
+            {/* TEST OPTIONS */}
+            <EventDisplayModal
+                displayOption={displayModal.test}
+                title='Test'
+                handleNameInputChange={handleNameInputChange}
+                handleDateInputChange={handleDateInputChange}
+                handleSecretInputChange={handleSecretInputChange}
+                newEventName={newEventName}
+                newEventDate={newEventDate}
+                newEventSecret={newEventSecret}
+                onButtonPress={() => {
+                    setDisplayModal({
+                        'lecture': false,
+                        'quiz': false,
+                        'workshop': false,
+                        'test': false
+                    });
+                    setPickerSelection('Select Default');
+                    checkValidInput();
+                }} />
+            {/* WORKSHOP OPTIONS */}
+            <EventDisplayModal
+                displayOption={displayModal.workshop}
+                title='Workshop'
+                handleNameInputChange={handleNameInputChange}
+                handleDateInputChange={handleDateInputChange}
+                handleSecretInputChange={handleSecretInputChange}
+                newEventName={newEventName}
+                newEventDate={newEventDate}
+                newEventSecret={newEventSecret}
+                onButtonPress={() => {
+                    setDisplayModal({
+                        'lecture': false,
+                        'quiz': false,
+                        'workshop': false,
+                        'test': false
+                    });
+                    setPickerSelection('Select Default');
+                    checkValidInput();
+                }} />
+            <View style={styles.buttonContainer}>
+                <View style={styles.button}>
+                    <Button style={{ margin: 10 }}
+                        disabled={disableResetButton}
+                        title='Reset'
+                        color='red'
+                        onPress={handleResetButton} />
+                </View>
+                <View style={styles.button}>
+                    <Button title="GENERATE QR CODE" disabled={disableGenerateButton} onPress={() => {
+                        props.navigation.navigate('QRCodeGenerated', {
+                            data1: newEventName,
+                            data2: newEventDate,
+                            data3: newEventSecret
+                        });
+                    }
+                    } />
+                </View>
 
-            }
 
-            } />
+            </View>
+
+
 
         </View>
     );
@@ -118,7 +225,6 @@ const styles = StyleSheet.create({
     picker: {
         height: 50,
         width: 200,
-        alignContent: 'center',
         alignItems: 'center',
         justifyContent: 'center'
     },
@@ -128,6 +234,28 @@ const styles = StyleSheet.create({
         padding: 20,
         alignItems: 'center',
         justifyContent: 'center',
+    },
+
+    displayInformationContainer: {
+        padding: 20,
+        margin: 20,
+
+    },
+    modal: {
+        padding: 40,
+        backgroundColor: '#efefef',
+        alignItems: 'center',
+        bottom: 20,
+        left: 20,
+        right: 20,
+        position: 'absolute'
+    },
+    buttonContainer: {
+        padding: 20,
+        margin: 10
+    },
+    button: {
+        margin: 5
     }
 });
 

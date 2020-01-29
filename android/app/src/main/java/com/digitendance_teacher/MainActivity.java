@@ -1,4 +1,4 @@
-package com.digitendance_teacher;
+package com.parthmanhas.digitendance_teacher;
 
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;

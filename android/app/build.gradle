@@ -128,7 +128,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.digitendance_teacher"
+        applicationId "com.parthmanhas.digitendance_teacher"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

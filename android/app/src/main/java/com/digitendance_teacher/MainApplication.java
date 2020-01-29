@@ -1,4 +1,4 @@
-package com.digitendance_teacher;
+package com.parthmanhas.digitendance_teacher;
 
 import android.app.Application;
 import android.content.Context;

@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "410811173038",
+    "firebase_url": "https://digitendance-acd0d.firebaseio.com",
+    "project_id": "digitendance-acd0d",
+    "storage_bucket": "digitendance-acd0d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:410811173038:android:7c312ef94a241bc7b0c53f",
+        "android_client_info": {
+          "package_name": "com.parthmanhas.digitendance_teacher"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "410811173038-etab9sabo9skdfbs37eg9r4b47rc0qfl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBUxwBGPJ_qcx93Vlx9Gxu58H43O6_tNL8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "410811173038-etab9sabo9skdfbs37eg9r4b47rc0qfl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

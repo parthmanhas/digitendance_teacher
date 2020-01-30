@@ -26,7 +26,7 @@ import {
 
 import DigitendanceNavigator from './src/navigation/DigitendanceNavigator';
 
-const App: () => React$Node = () => {
+const App:() => React$Node = () => {
   return (
     <DigitendanceNavigator />
   );

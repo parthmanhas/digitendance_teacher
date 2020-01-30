@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, StyleSheet, Button } from 'react-native';
 import QRCodeGenerate from '../components/QRCodeGenerate';
-
+import * as firebase from 'firebase';
 
 const QRCodeGeneratedScreen = props => {
     const data1 = props.navigation.getParam('data1', undefined);
@@ -9,14 +9,13 @@ const QRCodeGeneratedScreen = props => {
     const data3 = props.navigation.getParam('data3', undefined);
 
 
-
     const value = data1 + data2 + data3;
-    console.log(value);
+    // console.log(value);
     return (
         <View style={styles.screen}>
             <Text>QR CODE GENERATED!</Text>
-            <QRCodeGenerate data1={data1} data2={data2} data3={data3}/>
-
+            <QRCodeGenerate data1={data1} data2={data2} data3={data3} />
+            <Button title="POST DATA" onPress={postData} />
         </View>
     );
 };

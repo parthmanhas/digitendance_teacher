@@ -15,7 +15,7 @@ const QRCodeGeneratedScreen = props => {
         <View style={styles.screen}>
             <Text>QR CODE GENERATED!</Text>
             <QRCodeGenerate data1={data1} data2={data2} data3={data3} />
-            <Button title="POST DATA" onPress={postData} />
+            <Button title="POST DATA"/>
         </View>
     );
 };

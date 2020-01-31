@@ -25,8 +25,8 @@ const QRCodeGenerate = props => {
     else {
         console.error("EMTPY DATA");
     }
-    
-    firebase.database().ref('secret/002').set({
+    let currentUserEmail = firebase.auth().currentUser.email.split('@')[0];
+    firebase.database().ref(`${currentUserEmail}/${data1}/secret`).set({
         secretKey: ciphertext
     });
 

@@ -1,0 +1,24 @@
+{
+  "parthmanhas" : {
+    "lecture" : {
+      "secret" : {
+        "secretKey" : "U2FsdGVkX187IQTGTzPfQC9jwZRe6um8ld+ryNKjZS1e1ZejIdJhdQdXaCYfVVyQ"
+      }
+    }
+  },
+  "teacher1" : {
+    "date1" : {
+      "lecture1" : {
+        "-LzvYyfvA2jsyaWNrD-N" : {
+          "presentStudents" : "1691023nas"
+        },
+        "-LzvZJ_JMnAtGFbiTjjh" : {
+          "presentStudents" : 169105124
+        },
+        "-LzvZUxuSLM6v-E8dfbr" : {
+          "presentStudents" : 169105124
+        }
+      }
+    }
+  }
+}

@@ -30,9 +30,7 @@ const QRCodeGenerate = props => {
 
     const qrCode = `${currentUserEmail};${data1};${data2};${data3}`;
 
-    firebase.database().ref(`${currentUserEmail}/${data2}/${data1}/attendance`).set({
-        presentStudents: []
-    });
+    firebase.database().ref(`${currentUserEmail}/${data2}/${data1}/attendance`).set({presentStudents : 1});
 
     return (
         <QRCode value={qrCode} />

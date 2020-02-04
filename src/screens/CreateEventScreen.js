@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Button, Picker, TextInput, Modal } from 'react-native';
 import EventDisplayModal from '../components/EventDisplayModal';
+import ActiveDisplayModal from '../components/ActiveDisplayModal';
 
 const CreateEventScreen = props => {
+
+    const username = props.navigation.getParam('email', 'Teacher');
 
     const [pickerSelection, setPickerSelection] = useState('Select Event');
 
@@ -13,12 +16,7 @@ const CreateEventScreen = props => {
     const [newEventSecret, setNewEventSecret] = useState();
     const [disableResetButton, setDisableResetButton] = useState(true);
     const [disableGenerateButton, setdisableGenerateButton] = useState(true);
-    const [displayModal, setDisplayModal] = useState({
-        'lecture': false,
-        'quiz': false,
-        'workshop': false,
-        'test': false
-    });
+    const [displayModal, setDisplayModal] = useState(ActiveDisplayModal);
 
     const handleNameInputChange = (text) => {
         setNewEventName(text);
@@ -45,56 +43,37 @@ const CreateEventScreen = props => {
         setdisableGenerateButton(true);
     }
 
-    const displayRenderModal = (itemValue) => {
-        switch (itemValue) {
-            case 'lecture':
-                setDisplayModal({
-                    'lecture': true,
-                    'quiz': false,
-                    'workshop': false,
-                    'test': false
-                });
-                break;
-            case 'quiz':
-                setDisplayModal({
-                    'lecture': false,
-                    'quiz': true,
-                    'workshop': false,
-                    'test': false
-                });
-                break;
-            case 'test':
-                setDisplayModal({
-                    'lecture': false,
-                    'quiz': false,
-                    'workshop': false,
-                    'test': true
-                });
-                break;
-            case 'workshop':
-                setDisplayModal({
-                    'lecture': false,
-                    'quiz': false,
-                    'workshop': true,
-                    'test': false
-                });
-                break;
-            default:
-                console.error('ERROR! BOY!');
-        }
-    };
+    const handleModalBackdrop = () => {
+        setDisplayModal(ActiveDisplayModal);
+        setPickerSelection('Select Default');
+    }
+
+    const onEventModalDoneButtonPress = () => {
+        setDisplayModal(ActiveDisplayModal);
+        setPickerSelection('Select Default');
+        checkValidInput();
+    }
 
 
+    const handleInputChange = (lectureName, lectureDate, lectureSecret) => {
+        setNewEventName(lectureName);
+        setNewEventDate(lectureDate);
+        setNewEventSecret(lectureSecret);
+    }
 
     return (
         <View style={styles.screen}>
+            <Text style={{ margin: 15, fontSize: 22, fontWeight: 'bold', marginBottom: 30 }}>WELCOME {username.split('@')[0]} !</Text>
             <Text>CREATE EVENT</Text>
             <Picker
                 selectedValue={pickerSelection}
                 style={styles.picker}
                 onValueChange={(itemValue, itemIndex) => {
                     setPickerSelection(itemValue);
-                    displayRenderModal(itemValue);
+                    // displayRenderModal(itemValue);
+                    const modal = { ...ActiveDisplayModal };
+                    modal[itemValue] = true;
+                    setDisplayModal(modal);
                 }}>
                 <Picker.Item label="Select Event" value="" />
                 <Picker.Item label="Lecture" value="lecture" />
@@ -111,83 +90,44 @@ const CreateEventScreen = props => {
             <EventDisplayModal
                 displayOption={displayModal.lecture}
                 title='Lecture'
-                handleNameInputChange={handleNameInputChange}
-                handleDateInputChange={handleDateInputChange}
-                handleSecretInputChange={handleSecretInputChange}
+                setDisplayModal={setDisplayModal}
+                handleModalBackdrop={handleModalBackdrop}
+                handleInputChange={handleInputChange}
                 newEventName={newEventName}
                 newEventDate={newEventDate}
                 newEventSecret={newEventSecret}
-                onButtonPress={() => {
-                    setDisplayModal({
-                        'lecture': false,
-                        'quiz': false,
-                        'workshop': false,
-                        'test': false
-                    });
-                    setPickerSelection('Select Default');
-                    checkValidInput();
-                }}
+                onButtonPress={onEventModalDoneButtonPress}
             />
             {/* QUIZ OPTIONS */}
             <EventDisplayModal
                 displayOption={displayModal.quiz}
                 title='Quiz'
-                handleNameInputChange={handleNameInputChange}
-                handleDateInputChange={handleDateInputChange}
-                handleSecretInputChange={handleSecretInputChange}
+                setDisplayModal={setDisplayModal}
+                handleInputChange={handleInputChange}
                 newEventName={newEventName}
                 newEventDate={newEventDate}
                 newEventSecret={newEventSecret}
-                onButtonPress={() => {
-                    setDisplayModal({
-                        'lecture': false,
-                        'quiz': false,
-                        'workshop': false,
-                        'test': false
-                    });
-                    setPickerSelection('Select Default');
-                    checkValidInput();
-                }} />
+                onButtonPress={onEventModalDoneButtonPress} />
             {/* TEST OPTIONS */}
             <EventDisplayModal
                 displayOption={displayModal.test}
                 title='Test'
-                handleNameInputChange={handleNameInputChange}
-                handleDateInputChange={handleDateInputChange}
-                handleSecretInputChange={handleSecretInputChange}
+                setDisplayModal={setDisplayModal}
+                handleInputChange={handleInputChange}
                 newEventName={newEventName}
                 newEventDate={newEventDate}
                 newEventSecret={newEventSecret}
-                onButtonPress={() => {
-                    setDisplayModal({
-                        'lecture': false,
-                        'quiz': false,
-                        'workshop': false,
-                        'test': false
-                    });
-                    setPickerSelection('Select Default');
-                    checkValidInput();
-                }} />
+                onButtonPress={onEventModalDoneButtonPress} />
             {/* WORKSHOP OPTIONS */}
             <EventDisplayModal
                 displayOption={displayModal.workshop}
                 title='Workshop'
-                handleNameInputChange={handleNameInputChange}
-                handleDateInputChange={handleDateInputChange}
-                handleSecretInputChange={handleSecretInputChange}
+                setDisplayModal={setDisplayModal}
+                handleInputChange={handleInputChange}
                 newEventName={newEventName}
                 newEventDate={newEventDate}
                 newEventSecret={newEventSecret}
-                onButtonPress={() => {
-                    setDisplayModal({
-                        'lecture': false,
-                        'quiz': false,
-                        'workshop': false,
-                        'test': false
-                    });
-                    setPickerSelection('Select Default');
-                    checkValidInput();
-                }} />
+                onButtonPress={onEventModalDoneButtonPress} />
             <View style={styles.buttonContainer}>
                 <View style={styles.button}>
                     <Button style={{ margin: 10 }}

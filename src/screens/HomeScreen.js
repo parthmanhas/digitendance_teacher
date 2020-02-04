@@ -7,31 +7,43 @@ const HomeScreen = props => {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [showActivityIndicator, setShowActivityIndicator] = useState(false);
 
     const loginUser = (email, password) => {
+        setShowActivityIndicator(true);
         //add email validation
         //dislay error when validation goes wrong
         firebase.auth().signInWithEmailAndPassword(email, password)
             .then(() => {
-                props.navigation.navigate('Event');
-                console.log(firebase.auth().currentUser)
+                props.navigation.navigate('Event', {email: email});
+                console.log(firebase.auth().currentUser);
+                setShowActivityIndicator(false);
             })
             .catch(error => {
                 Alert.alert(error.message);
+                setShowActivityIndicator(false);
             });
     }
 
     const signUpUser = (email, password) => {
         //display error when something goes wrong
+        setShowActivityIndicator(true);
         try {
             if (password.length < 6) {
                 Alert.alert("Please enter more than 6 characters");
+                setShowActivityIndicator(false);
                 return;
             }
 
-            firebase.auth().createUserWithEmailAndPassword(email, password).then(
-                Alert.alert('Sign up successful! Please Login!')
-            );
+            firebase.auth().createUserWithEmailAndPassword(email, password)
+            .then(() => {
+                Alert.alert("Sign Up Successful! Please Login in!");
+                setShowActivityIndicator(false);
+            })
+            .catch((error) => {
+                Alert.alert(error.message);
+                setShowActivityIndicator(false);
+            })
         }
         catch (error) {
             console.log(error.toString());
@@ -66,11 +78,13 @@ const HomeScreen = props => {
                         autoCorrect={false}
                     />
                 </Item>
+                <ActivityIndicator style={{margin: 10}}animating={showActivityIndicator} />
                 <Button
                     full
                     rounded
                     success
                     onPress={() => loginUser(email, password)}
+                    disabled = {showActivityIndicator}
                 >
                     <Text style={{ color: 'white' }}>Login</Text>
                 </Button>
@@ -82,6 +96,7 @@ const HomeScreen = props => {
                     full
                     rounded
                     primary
+                    disabled = {showActivityIndicator}
                 >
                     <Text style={{ color: 'white' }}>Sign Up</Text>
                 </Button>

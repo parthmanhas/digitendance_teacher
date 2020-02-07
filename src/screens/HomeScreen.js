@@ -15,7 +15,7 @@ const HomeScreen = props => {
         //dislay error when validation goes wrong
         firebase.auth().signInWithEmailAndPassword(email, password)
             .then(() => {
-                props.navigation.navigate('Event', {email: email});
+                props.navigation.navigate('Teacher', {email: email});
                 console.log(firebase.auth().currentUser);
                 setShowActivityIndicator(false);
             })

@@ -6,10 +6,14 @@ import { createStackNavigator } from 'react-navigation-stack';
 import HomeScreen from '../screens/HomeScreen';
 import QRCodeGeneratedScreen from '../screens/QRCodeGeneratedScreen';
 import CreateEventScreen from '../screens/CreateEventScreen';
+import TeacherProfileScreen from '../screens/TeacherProfileScreen';
+import ViewAttendanceScreen from '../screens/ViewAttendanceScreen';
 
 const RootNavigator = createStackNavigator({
     Home: HomeScreen,
+    Teacher: TeacherProfileScreen,
     Event: CreateEventScreen,
+    ViewAttendance: ViewAttendanceScreen,
     QRCodeGenerated: QRCodeGeneratedScreen
 });
 

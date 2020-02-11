@@ -28,7 +28,7 @@ const TeacherProfileScreen = props => {
                     rounded
                     success
                     style={{ margin: 10 }}
-                    onPress={() => props.navigation.navigate('ViewAttendance', {username:username})}>
+                    onPress={() => props.navigation.navigate('ViewAttendanceByDate', {username:username})}>
                     <Text style={{ color: 'white' }}>View Attendance</Text>
                 </Button>
             </View>

@@ -14,23 +14,18 @@ const CreateEventScreen = props => {
     const [newEventName, setNewEventName] = useState();
     const [newEventDate, setNewEventDate] = useState();
     const [newEventSecret, setNewEventSecret] = useState();
+    const [newEventTime, setNewEventTime] = useState();
     const [disableResetButton, setDisableResetButton] = useState(true);
     const [disableGenerateButton, setdisableGenerateButton] = useState(true);
     const [displayModal, setDisplayModal] = useState(ActiveDisplayModal);
 
-    const handleNameInputChange = (text) => {
-        setNewEventName(text);
-    }
-    const handleDateInputChange = (text) => {
-        setNewEventDate(text);
-    }
-    const handleSecretInputChange = (text) => {
-        setNewEventSecret(text);
-    }
-
     const checkValidInput = () => {
-        if (newEventName && newEventDate && newEventSecret) {
+        
+        if (newEventName && newEventDate && newEventSecret && newEventTime) {
             setdisableGenerateButton(false);
+            setDisableResetButton(false);
+        }
+        else if(newEventName || newEventDate || newEventSecret || newEventTime){
             setDisableResetButton(false);
         }
     }
@@ -39,6 +34,7 @@ const CreateEventScreen = props => {
         setNewEventName();
         setNewEventDate();
         setNewEventSecret();
+        setNewEventTime();
         setDisableResetButton(true);
         setdisableGenerateButton(true);
     }
@@ -55,11 +51,16 @@ const CreateEventScreen = props => {
     }
 
 
-    const handleInputChange = (lectureName, lectureDate, lectureSecret) => {
-        setNewEventName(lectureName);
-        setNewEventDate(lectureDate);
-        setNewEventSecret(lectureSecret);
+    const handleInputChange = (eventName, eventDate, eventSecret, eventTime) => {
+        setNewEventName(eventName);
+        setNewEventDate(eventDate);
+        setNewEventSecret(eventSecret);
+        setNewEventTime(eventTime);
     }
+
+    useEffect(() => {
+        checkValidInput();
+    }, [newEventName, newEventDate, newEventSecret, newEventTime]);
 
     return (
         <View style={styles.screen}>
@@ -84,6 +85,7 @@ const CreateEventScreen = props => {
             <View style={styles.displayInformationContainer}>
                 <Text>{newEventName ? `Event Name : ${newEventName}` : ''}</Text>
                 <Text>{newEventDate ? `Event Date : ${newEventDate}` : ''}</Text>
+                <Text>{newEventTime ? `Event Time : ${newEventTime}` : ''}</Text>
                 <Text>{newEventSecret ? `Event Secret : ${newEventSecret}` : ''}</Text>
             </View>
             {/* LECTURE OPTIONS */}
@@ -139,19 +141,15 @@ const CreateEventScreen = props => {
                 <View style={styles.button}>
                     <Button title="GENERATE QR CODE" disabled={disableGenerateButton} onPress={() => {
                         props.navigation.navigate('QRCodeGenerated', {
-                            data1: newEventName,
-                            data2: newEventDate,
-                            data3: newEventSecret
+                            eventName: newEventName,
+                            eventDate: newEventDate,
+                            eventSecret: newEventSecret,
+                            eventTime: newEventTime
                         });
                     }
                     } />
                 </View>
-
-
             </View>
-
-
-
         </View>
     );
 };
@@ -160,7 +158,7 @@ const styles = StyleSheet.create({
     screen: {
         flex: 1,
         alignItems: 'center',
-        padding: 20
+        padding: 20,
     },
     picker: {
         height: 50,
@@ -180,15 +178,6 @@ const styles = StyleSheet.create({
         padding: 20,
         margin: 20,
 
-    },
-    modal: {
-        padding: 40,
-        backgroundColor: '#efefef',
-        alignItems: 'center',
-        bottom: 20,
-        left: 20,
-        right: 20,
-        position: 'absolute'
     },
     buttonContainer: {
         padding: 20,

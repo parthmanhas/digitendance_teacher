@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Alert, FlatList, ActivityIndicator } from 'react-native';
 import { Button } from 'native-base';
 import * as firebase from 'firebase';
@@ -11,31 +11,31 @@ const ViewAttendanceByStudentsScreen = props => {
 
     const [data, setData] = useState();
     const [dataLoaded, setDataLoaded] = useState(false);
-
-    firebase.database().ref(`${username}/${date}/${lecture}`).once('value')
-        .then((snap) => {
-            setData(snap.val());
-            setDataLoaded(true);
-        })
-        .catch((error) => {
-            Alert.alert(error.message);
-        })
-
-
-
-    let students = [];
-
-
-
-    let j = 0;
-    for (let i in data) {
-        students.push({ key: i, student: `${data[i]['regNumber']} ${data[i]['name']}` });
-        j++;
-    }
+    const [students, setStudents] = useState([]);
+    
+    useEffect(() => {
+        if (!dataLoaded) {
+            firebase.database().ref(`${username}/${date}/${lecture}/attendance`).once('value')
+                .then((snap) => {
+                    setData(snap.val());
+                    setDataLoaded(true);
+                })
+                .catch((error) => {
+                    Alert.alert(error.message);
+                })
+        }
+        else {
+            for (let i in data) {
+                if(i != "init")
+                    setStudents(students => [...students, { key: i, student: `${data[i]['regNumber']} ${data[i]['name']}` }]);
+            }
+            
+        }
+    }, [dataLoaded]);
 
     return (
         <View style={styles.screen}>
-            <Text>{date} ATTENDANCE</Text>
+            <Text>{date}</Text>
             <View>
                 <ActivityIndicator animating={!dataLoaded} />
                 <FlatList
@@ -60,7 +60,6 @@ const styles = StyleSheet.create({
     },
     listItem: {
         margin: 5,
-
 
     }
 });

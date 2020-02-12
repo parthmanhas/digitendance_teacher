@@ -1,13 +1,27 @@
 import React from 'react';
 import QRCode from 'react-native-qrcode-svg';
-import CryptoJS from "react-native-crypto-js";
-import * as firebase from 'firebase';
+import  * as firebaseWrapper from '../components/firebaseWrapper';
 
 const QRCodeGenerate = props => {
 
-    const data1 = props.data1;
-    const data2 = props.data2;
-    const data3 = props.data3;
+    const eventName = props.eventName;
+    const eventDate = props.eventDate;
+    const eventSecret = props.eventSecret;
+    const eventTime = props.eventTime;
+
+    const currentUserEmail = firebaseWrapper.AddEvent(eventName, eventDate, eventSecret, eventTime);
+    const qrCode = `${currentUserEmail};${eventName};${eventDate};${eventSecret};${eventTime}`;
+
+
+    return (
+        <QRCode value={qrCode} />
+    );
+};
+
+export default QRCodeGenerate;
+
+
+
 
     // let toEncrypt = `${data1};${data2};${data3}`;
 
@@ -25,16 +39,3 @@ const QRCodeGenerate = props => {
     // else {
     //     console.error("EMTPY DATA");
     // }
-
-    let currentUserEmail = firebase.auth().currentUser.email.split('@')[0];
-
-    const qrCode = `${currentUserEmail};${data1};${data2};${data3}`;
-
-    firebase.database().ref(`${currentUserEmail}/${data2}/${data1}/attendance`).set({presentStudents : 1});
-
-    return (
-        <QRCode value={qrCode} />
-    );
-};
-
-export default QRCodeGenerate;

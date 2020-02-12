@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, Alert, ActivityIndicator } from 'react-native';
 import { Container, Content, Header, Form, Input, Item, Button, Label } from 'native-base'
 import * as firebase from 'firebase';
+import * as firebaseWrapper from '../components/firebaseWrapper';
 
 const HomeScreen = props => {
 
@@ -13,16 +14,13 @@ const HomeScreen = props => {
         setShowActivityIndicator(true);
         //add email validation
         //dislay error when validation goes wrong
-        firebase.auth().signInWithEmailAndPassword(email, password)
-            .then(() => {
-                props.navigation.navigate('Teacher', {email: email});
-                console.log(firebase.auth().currentUser);
-                setShowActivityIndicator(false);
-            })
-            .catch(error => {
-                Alert.alert(error.message);
-                setShowActivityIndicator(false);
-            });
+
+        //$TODO REMOVE THESE TWO LINES BELOW
+        setEmail('teacher2@gmail.com');
+        setPassword('teacher2');
+        firebaseWrapper.Login(email, password, props,setShowActivityIndicator);
+
+        
     }
 
     const signUpUser = (email, password) => {
@@ -34,16 +32,8 @@ const HomeScreen = props => {
                 setShowActivityIndicator(false);
                 return;
             }
-
-            firebase.auth().createUserWithEmailAndPassword(email, password)
-            .then(() => {
-                Alert.alert("Sign Up Successful! Please Login in!");
-                setShowActivityIndicator(false);
-            })
-            .catch((error) => {
-                Alert.alert(error.message);
-                setShowActivityIndicator(false);
-            })
+            firebaseWrapper.SignUp(email, password, props, setShowActivityIndicator);
+            
         }
         catch (error) {
             console.log(error.toString());

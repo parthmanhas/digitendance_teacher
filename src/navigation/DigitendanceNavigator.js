@@ -12,13 +12,15 @@ import ViewAttendanceByLectureScreen from '../screens/ViewAttendanceByLectureScr
 import ViewAttendanceByStudentsScreen from '../screens/ViewAttendanceByStudentsScreen';
 
 const RootNavigator = createStackNavigator({
+
     Home: HomeScreen,
     Teacher: TeacherProfileScreen,
     Event: CreateEventScreen,
     ViewAttendanceByDate: ViewAttendanceByDateScreen,
     QRCodeGenerated: QRCodeGeneratedScreen,
-    ViewAttendanceByLecture : ViewAttendanceByLectureScreen,
-    ViewAttendanceByStudents: ViewAttendanceByStudentsScreen
+    ViewAttendanceByLecture: ViewAttendanceByLectureScreen,
+    ViewAttendanceByStudents: ViewAttendanceByStudentsScreen,
+
 });
 
 const styles = StyleSheet.create({});

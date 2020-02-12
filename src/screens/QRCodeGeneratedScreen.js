@@ -1,20 +1,17 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, Button } from 'react-native';
 import QRCodeGenerate from '../components/QRCodeGenerate';
-import * as firebase from 'firebase';
 
 const QRCodeGeneratedScreen = props => {
-    const data1 = props.navigation.getParam('data1', undefined);
-    const data2 = props.navigation.getParam('data2', undefined);
-    const data3 = props.navigation.getParam('data3', undefined);
-
-
-    const value = data1 + data2 + data3;
-    // console.log(value);
+    const eventName = props.navigation.getParam('eventName', undefined);
+    const eventDate = props.navigation.getParam('eventDate', undefined);
+    const eventSecret = props.navigation.getParam('eventSecret', undefined);
+    const eventTime = props.navigation.getParam('eventTime', undefined);
+    
     return (
         <View style={styles.screen}>
             <Text>QR CODE GENERATED!</Text>
-            <QRCodeGenerate data1={data1} data2={data2} data3={data3} />
+            <QRCodeGenerate eventName={eventName} eventDate={eventDate} eventSecret={eventSecret} eventTime={eventTime} />
         </View>
     );
 };

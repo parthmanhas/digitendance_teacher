@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Alert, FlatList, ActivityIndicator } from 'react-native';
 import { Button } from 'native-base';
-import * as firebase from 'firebase';
+import firebaseWrapper from '../components/firebaseWrapper';
 
 const ViewAttendanceByStudentsScreen = props => {
 
@@ -15,14 +15,7 @@ const ViewAttendanceByStudentsScreen = props => {
     
     useEffect(() => {
         if (!dataLoaded) {
-            firebase.database().ref(`${username}/${date}/${lecture}/attendance`).once('value')
-                .then((snap) => {
-                    setData(snap.val());
-                    setDataLoaded(true);
-                })
-                .catch((error) => {
-                    Alert.alert(error.message);
-                })
+            firebaseWrapper.ViewAttendanceByStudent(username, date, lecture, setDataLoaded);
         }
         else {
             for (let i in data) {

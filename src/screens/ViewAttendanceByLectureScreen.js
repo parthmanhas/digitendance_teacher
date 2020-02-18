@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Text, FlatList, ActivityIndicator } from 'react-native';
 import { Button } from 'native-base';
-import * as firebase from 'firebase';
+import firebaseWrapper from '../components/firebaseWrapper';
 
 const ViewAttendanceByLectureScreen = props => {
 
@@ -18,11 +18,7 @@ const ViewAttendanceByLectureScreen = props => {
 
     useEffect(() => {
         if (!dataLoaded) {
-            firebase.database().ref(`${username}/${selectedDate}`).once('value')
-                .then((snap) => {
-                    setData(snap.val());
-                    setDataLoaded(true);
-                });
+            firebaseWrapper.ViewAttendanceByLecture(username, selectedDate, setData, setDataLoaded);
         }
         else {
             let j = 0;

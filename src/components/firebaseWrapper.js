@@ -26,7 +26,7 @@ export function SignUp(email, password, props, setShowActivityIndicator) {
         })
 }
 
-export function AddEvent(eventName, eventDate, eventSecret, eventTime) {    
+export function AddEvent(eventName, eventDate, eventSecret, eventTime) {
     const db = firebase.database();
     let currentUserEmail = firebase.auth().currentUser.email.split('@')[0];
     const path = `${currentUserEmail}/${eventDate}/${eventName}`;
@@ -37,9 +37,33 @@ export function AddEvent(eventName, eventDate, eventSecret, eventTime) {
     return currentUserEmail;
 }
 
-export function ViewAttendance(params) {
-
+export function ViewAttendanceByDate(username, setDataLoaded) {
+    firebase.database().ref(username).once('value')
+        .then((snap) => {
+            setData(snap.val());
+            setDataLoaded(true);
+        })
+        .catch((error) => Alert.alert(error.message));
 }
 
+export function ViewAttendanceByLecture(username, selectedDate, setData, setDataLoaded) {
+    firebase.database().ref(`${username}/${selectedDate}`).once('value')
+        .then((snap) => {
+            setData(snap.val());
+            setDataLoaded(true);
+        })
+        .catch((error) => Alert.alert(error.message)); 
+}
+
+export function ViewAttendanceByStudent(username, date, lecture, setDataLoaded) {
+    firebase.database().ref(`${username}/${date}/${lecture}/attendance`).once('value')
+        .then((snap) => {
+            setData(snap.val());
+            setDataLoaded(true);
+        })
+        .catch((error) => {
+            Alert.alert(error.message);
+        })
+}
 
 

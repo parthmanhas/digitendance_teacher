@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text, FlatList, ActivityIndicator } from 'react-native';
 import { Button } from 'native-base';
 import * as firebase from 'firebase';
+import firebaseWrapper from '../components/firebaseWrapper';
 
 
 const ViewAttendanceByDateScreen = props => {
@@ -24,11 +25,7 @@ const ViewAttendanceByDateScreen = props => {
 
     useEffect(() => {
         if (!dataLoaded) {
-            firebase.database().ref(username).once('value')
-                .then((snap) => {
-                    setData(snap.val());
-                    setDataLoaded(true);
-                });
+            firebaseWrapper.ViewAttendanceByDateScreen(username, setDataLoaded)
         }
         else {
             let j = 0;

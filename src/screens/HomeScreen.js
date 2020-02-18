@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, Alert, ActivityIndicator } from 'react-native';
 import { Container, Content, Header, Form, Input, Item, Button, Label } from 'native-base'
-import * as firebase from 'firebase';
 import * as firebaseWrapper from '../components/firebaseWrapper';
 
 const HomeScreen = props => {

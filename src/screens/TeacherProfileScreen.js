@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Container, Content, Header, Form, Input, Item, Button, Label } from 'native-base';
+import store from '../store/store';
 
 const TeacherProfileScreen = props => {
 

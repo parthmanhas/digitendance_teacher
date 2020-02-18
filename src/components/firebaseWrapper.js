@@ -1,6 +1,6 @@
 import { Alert } from 'react-native';
 import * as firebase from 'firebase';
-
+import store from '../store/store';
 
 export function Login(email, password, props, setShowActivityIndicator) {
     firebase.auth().signInWithEmailAndPassword(email, password)
@@ -30,7 +30,20 @@ export function AddEvent(eventName, eventDate, eventSecret, eventTime) {
     const db = firebase.database();
     let currentUserEmail = firebase.auth().currentUser.email.split('@')[0];
     const path = `${currentUserEmail}/${eventDate}/${eventName}`;
-    db.ref(path).set({ secret: eventSecret, time: eventTime });
+    const latitude = store.getState().location.latitude;
+    const longitude = store.getState().location.longitude;
+    const accuracy = store.getState().location.accuracy;
+    db.ref(path).set({
+        eventInformation: {
+            secret: eventSecret,
+            time: eventTime,
+            coords: {
+                latitude: latitude,
+                longitude: longitude,
+                accuracy: accuracy
+            }
+        }
+    });
     db.ref(path + '/attendance').set({ init: 1 });
 
 
@@ -52,7 +65,7 @@ export function ViewAttendanceByLecture(username, selectedDate, setData, setData
             setData(snap.val());
             setDataLoaded(true);
         })
-        .catch((error) => Alert.alert(error.message)); 
+        .catch((error) => Alert.alert(error.message));
 }
 
 export function ViewAttendanceByStudent(username, date, lecture, setDataLoaded) {

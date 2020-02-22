@@ -4,6 +4,8 @@ import { Button } from 'native-base';
 import Modal from 'react-native-modal';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 
+const modalFontSize = 18;
+
 const EventDisplayModal = props => {
 
     const [eventName, setEventName] = useState();
@@ -65,11 +67,11 @@ const EventDisplayModal = props => {
             onRequestClose={props.onButtonPress}
             animationType='fade'>
             <View style={styles.content}>
-
-                <Text>{props.title} OPTIONS</Text>
-
+                <View style={{margin: 15}}>
+                    <Text style={{ fontSize: 25, fontWeight: 'bold' }}>{props.title} Options</Text>
+                </View>
                 <TextInput
-                    style={{ textAlign: 'center' }}
+                    style={{ textAlign: 'center', fontSize: modalFontSize }}
                     placeholder={`Enter ${props.title} Name`}
                     onChangeText={(eventName) => { setEventName(eventName) }}
                     value={eventName}
@@ -77,10 +79,10 @@ const EventDisplayModal = props => {
                 />
 
                 <TouchableOpacity style={{ marginBottom: 10 }} onPress={selectDate}>
-                    <Text>{eventDate ? eventDate.toString() : "Select Date"}</Text>
+                    <Text style={{ fontSize: modalFontSize }}>{eventDate ? eventDate.toString() : "Select Date"}</Text>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={selectTime}>
-                    <Text>{eventTime ? eventTime.toString() : "Select Time"}</Text>
+                    <Text style={{ fontSize: modalFontSize }}>{eventTime ? eventTime.toString() : "Select Time"}</Text>
                 </TouchableOpacity>
 
                 <DateTimePickerModal
@@ -101,7 +103,7 @@ const EventDisplayModal = props => {
                     placeholder="Enter Secret Key"
                     onChangeText={(eventSecret) => setEventSecret(eventSecret)}
                     value={eventSecret}
-                    style={{ textAlign: 'center' }}
+                    style={{ textAlign: 'center', fontSize: modalFontSize }}
                 />
 
             </View>

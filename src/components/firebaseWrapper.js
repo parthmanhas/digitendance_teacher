@@ -2,6 +2,8 @@ import { Alert } from 'react-native';
 import * as firebase from 'firebase';
 import store from '../store/store';
 
+const BASE_PATH = '';
+
 export function Login(email, password, props, setShowActivityIndicator) {
     firebase.auth().signInWithEmailAndPassword(email, password)
         .then(() => {
@@ -14,7 +16,7 @@ export function Login(email, password, props, setShowActivityIndicator) {
         });
 }
 
-export function SignUp(email, password, props, setShowActivityIndicator) {
+export function SignUp(email, password, setShowActivityIndicator) {
     firebase.auth().createUserWithEmailAndPassword(email, password)
         .then(() => {
             Alert.alert("Sign Up Successful! Please Login in!");
@@ -29,7 +31,7 @@ export function SignUp(email, password, props, setShowActivityIndicator) {
 export function AddEvent(eventName, eventDate, eventSecret, eventTime) {
     const db = firebase.database();
     let currentUserEmail = firebase.auth().currentUser.email.split('@')[0];
-    const path = `${currentUserEmail}/${eventDate}/${eventName}`;
+    const path = BASE_PATH + `${currentUserEmail}/${eventDate}/${eventName}`;
     const latitude = store.getState().location.latitude;
     const longitude = store.getState().location.longitude;
     const accuracy = store.getState().location.accuracy;
@@ -50,8 +52,9 @@ export function AddEvent(eventName, eventDate, eventSecret, eventTime) {
     return currentUserEmail;
 }
 
-export function ViewAttendanceByDate(username, setDataLoaded) {
-    firebase.database().ref(username).once('value')
+export function ViewAttendanceByDate(username, setData, setDataLoaded) {
+    const path = BASE_PATH + username;
+    firebase.database().ref(path).once('value')
         .then((snap) => {
             setData(snap.val());
             setDataLoaded(true);
@@ -60,7 +63,8 @@ export function ViewAttendanceByDate(username, setDataLoaded) {
 }
 
 export function ViewAttendanceByLecture(username, selectedDate, setData, setDataLoaded) {
-    firebase.database().ref(`${username}/${selectedDate}`).once('value')
+    const path = BASE_PATH + `${username}/${selectedDate}`;
+    firebase.database().ref(path).once('value')
         .then((snap) => {
             setData(snap.val());
             setDataLoaded(true);
@@ -68,8 +72,9 @@ export function ViewAttendanceByLecture(username, selectedDate, setData, setData
         .catch((error) => Alert.alert(error.message));
 }
 
-export function ViewAttendanceByStudent(username, date, lecture, setDataLoaded) {
-    firebase.database().ref(`${username}/${date}/${lecture}/attendance`).once('value')
+export function ViewAttendanceByStudent(username, setData, date, lecture, setDataLoaded) {
+    const path = BASE_PATH + `${username}/${date}/${lecture}/attendance`;
+    firebase.database().ref(path).once('value')
         .then((snap) => {
             setData(snap.val());
             setDataLoaded(true);
@@ -78,5 +83,6 @@ export function ViewAttendanceByStudent(username, date, lecture, setDataLoaded) 
             Alert.alert(error.message);
         })
 }
+
 
 

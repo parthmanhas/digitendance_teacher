@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Text, FlatList, ActivityIndicator } from 'react-native';
 import { Button } from 'native-base';
-import firebaseWrapper from '../components/firebaseWrapper';
+import * as firebaseWrapper from '../components/firebaseWrapper';
 
 const ViewAttendanceByLectureScreen = props => {
 
@@ -22,10 +22,12 @@ const ViewAttendanceByLectureScreen = props => {
         }
         else {
             let j = 0;
+            let getData = [];
             for (let i in data) {
-                setLectures(lectures => [...lectures, { key: `${j}`, lectureName: i }]);
+                getData.push({key: `${j}`, lectureName: i});
                 j++;
             }
+            setLectures(getData);
         }
 
     }, [dataLoaded]);

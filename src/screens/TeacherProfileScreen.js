@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Container, Content, Header, Form, Input, Item, Button, Label } from 'native-base';
-import store from '../store/store';
+import * as colors from '../constants/colors';
 
 const TeacherProfileScreen = props => {
 
@@ -18,17 +18,15 @@ const TeacherProfileScreen = props => {
             <View style={styles.buttonContainer}>
                 <Button
                     full
-                    rounded
                     success
-                    style={{ margin: 10 }}
+                    style={{...styles.button, backgroundColor: colors.BUTTON_DARK }}
                     onPress={() => props.navigation.navigate('Event')}>
                     <Text style={{ color: 'white' }}>Create Event</Text>
                 </Button>
                 <Button
                     full
-                    rounded
                     success
-                    style={{ margin: 10 }}
+                    style={{...styles.button, backgroundColor: colors.BUTTON_DARK }}
                     onPress={() => props.navigation.navigate('ViewAttendanceByDate', {username:username})}>
                     <Text style={{ color: 'white' }}>View Attendance</Text>
                 </Button>
@@ -42,6 +40,7 @@ const styles = StyleSheet.create({
     screen: {
         flex: 1,
         padding: 10,
+        backgroundColor: colors.BACKGROUND
     },
     buttonContainer: {
         flex: 1,
@@ -53,6 +52,10 @@ const styles = StyleSheet.create({
         margin: 10,
         padding:10,
         alignItems:'center',
+    },
+    button:{
+        margin: 10,
+        borderRadius: 6
     }
 });
 

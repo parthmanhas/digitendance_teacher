@@ -64,8 +64,7 @@ const CreateEventScreen = props => {
 
     return (
         <View style={styles.screen}>
-            <Text style={{ margin: 15, fontSize: 22, fontWeight: 'bold', marginBottom: 30 }}>WELCOME {username.split('@')[0]} !</Text>
-            <Text>CREATE EVENT</Text>
+            <Text style={{ margin: 15, fontSize: 22, fontWeight: 'bold', marginBottom: 30 }}>CREATE EVENT</Text>
             <Picker
                 selectedValue={pickerSelection}
                 style={styles.picker}

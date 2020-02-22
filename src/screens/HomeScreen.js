@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, Alert, ActivityIndicator } from 'react-native';
+import { View, Text, StyleSheet, Alert, ActivityIndicator, Image } from 'react-native';
 import { Container, Content, Header, Form, Input, Item, Button, Label } from 'native-base'
 import * as firebaseWrapper from '../components/firebaseWrapper';
+import * as colors from '../constants/colors';
+
 
 const HomeScreen = props => {
 
@@ -17,9 +19,9 @@ const HomeScreen = props => {
         //$TODO REMOVE THESE TWO LINES BELOW
         setEmail('teacher2@gmail.com');
         setPassword('teacher2');
-        firebaseWrapper.Login(email, password, props,setShowActivityIndicator);
+        firebaseWrapper.Login(email, password, props, setShowActivityIndicator);
 
-        
+
     }
 
     const signUpUser = (email, password) => {
@@ -32,7 +34,7 @@ const HomeScreen = props => {
                 return;
             }
             firebaseWrapper.SignUp(email, password, props, setShowActivityIndicator);
-            
+
         }
         catch (error) {
             console.log(error.toString());
@@ -40,14 +42,10 @@ const HomeScreen = props => {
     }
 
     return (
-        // <View style={styles.screen}>
-        //     <Text>WELCOME TO DIGITENDANCE!</Text>
-        //     <Button title="Create Event" onPress={() => {
-        //         props.navigation.navigate('Event')
-        //     }} />
-        // </View>
-
         <Container style={styles.screen}>
+            <View style={styles.logo}>
+                <Image source={require('../assets/logo.png')} style={{ width: 150, height: 150 }} />
+            </View>
             <Form>
                 <Item floatingLabel>
                     <Label>Email</Label>
@@ -67,13 +65,13 @@ const HomeScreen = props => {
                         autoCorrect={false}
                     />
                 </Item>
-                <ActivityIndicator style={{margin: 10}}animating={showActivityIndicator} />
+                <ActivityIndicator style={{ margin: 10 }} animating={showActivityIndicator} />
                 <Button
                     full
-                    rounded
                     success
                     onPress={() => loginUser(email, password)}
-                    disabled = {showActivityIndicator}
+                    disabled={showActivityIndicator}
+                    style={{ ...styles.button }}
                 >
                     <Text style={{ color: 'white' }}>Login</Text>
                 </Button>
@@ -81,11 +79,10 @@ const HomeScreen = props => {
 
                 <Button
                     onPress={() => signUpUser(email, password)}
-                    style={{ marginTop: 10 }}
+                    style={{ ...styles.button, marginTop: 10 }}
                     full
-                    rounded
                     primary
-                    disabled = {showActivityIndicator}
+                    disabled={showActivityIndicator}
                 >
                     <Text style={{ color: 'white' }}>Sign Up</Text>
                 </Button>
@@ -98,7 +95,14 @@ const styles = StyleSheet.create({
     screen: {
         flex: 1,
         padding: 10,
-        justifyContent: 'center'
+        justifyContent: 'center',
+        backgroundColor: colors.BACKGROUND
+    },
+    logo: {
+        alignItems: 'center',
+    },
+    button: {
+        borderRadius: 6,
     }
 });
 

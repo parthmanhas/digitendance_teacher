@@ -3,8 +3,7 @@ console.ignoredYellowBox = ['Setting a timer'];
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text, FlatList, ActivityIndicator } from 'react-native';
 import { Button } from 'native-base';
-import * as firebase from 'firebase';
-import firebaseWrapper from '../components/firebaseWrapper';
+import * as firebaseWrapper from '../components/firebaseWrapper';
 
 
 const ViewAttendanceByDateScreen = props => {
@@ -25,20 +24,25 @@ const ViewAttendanceByDateScreen = props => {
 
     useEffect(() => {
         if (!dataLoaded) {
-            firebaseWrapper.ViewAttendanceByDateScreen(username, setDataLoaded)
+            firebaseWrapper.ViewAttendanceByDate(username, setData, setDataLoaded);
         }
-        else {
+        else if(dates.length == 0) {
             let j = 0;
+            let getDates = []
             for (var i in data) {
-                setDates(dates => [...dates , { key: `${j}`, date: i }]);
+                
+                getDates.push({key : `${j}`, date: i});
+                console.log(getDates);
                 j++;
             }
+            setDates(getDates);
         }
+        console.log(dates);
 
     }, [dataLoaded]);
     return (
         <View style={styles.screen}>
-            <Text>Select A Date</Text>
+            <Text style={{ margin: 15, fontSize: 22, fontWeight: 'bold', marginBottom: 30 }}>Select A Date</Text>
             <ActivityIndicator animating={!dataLoaded} />
             <FlatList
                 data={dates}

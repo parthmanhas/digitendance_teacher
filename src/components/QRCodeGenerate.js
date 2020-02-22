@@ -8,13 +8,18 @@ const QRCodeGenerate = props => {
     const eventDate = props.eventDate;
     const eventSecret = props.eventSecret;
     const eventTime = props.eventTime;
+    const setQRRef = props.qrRef;
 
     const currentUserEmail = firebaseWrapper.AddEvent(eventName, eventDate, eventSecret, eventTime);
     const qrCode = `${currentUserEmail};${eventName};${eventDate};${eventSecret};${eventTime}`;
 
 
     return (
-        <QRCode value={qrCode} />
+        <QRCode 
+        value={qrCode} 
+        size={200} 
+        getRef={(ref) => setQRRef(ref)} 
+        quietZone={50}/>
     );
 };
 

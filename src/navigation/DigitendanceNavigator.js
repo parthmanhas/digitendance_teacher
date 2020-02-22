@@ -1,4 +1,3 @@
-import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
@@ -13,13 +12,48 @@ import ViewAttendanceByStudentsScreen from '../screens/ViewAttendanceByStudentsS
 
 const RootNavigator = createStackNavigator({
 
-    Home: HomeScreen,
-    Teacher: TeacherProfileScreen,
-    Event: CreateEventScreen,
-    ViewAttendanceByDate: ViewAttendanceByDateScreen,
-    QRCodeGenerated: QRCodeGeneratedScreen,
-    ViewAttendanceByLecture: ViewAttendanceByLectureScreen,
-    ViewAttendanceByStudents: ViewAttendanceByStudentsScreen,
+    Home: {
+        screen: HomeScreen,
+        navigationOptions: {
+            headerShown: false,
+        }
+    },
+    Teacher: {
+        screen: TeacherProfileScreen,
+        navigationOptions: {
+            headerShown: false
+        }
+    },
+    Event: {
+        screen: CreateEventScreen,
+        navigationOptions: {
+            headerShown: false
+        }
+    },
+    ViewAttendanceByDate: {
+        screen: ViewAttendanceByDateScreen,
+        navigationOptions: {
+            headerShown: false
+        }
+    },
+    QRCodeGenerated: {
+        screen: QRCodeGeneratedScreen,
+        navigationOptions: {
+            headerShown: false
+        }
+    },
+    ViewAttendanceByLecture: {
+        screen: ViewAttendanceByLectureScreen,
+        navigationOptions: {
+            headerShown: false
+        }
+    },
+    ViewAttendanceByStudents: {
+        screen: ViewAttendanceByStudentsScreen,
+        navigationOptions: {
+            headerShown: false
+        }
+    },
 
 });
 

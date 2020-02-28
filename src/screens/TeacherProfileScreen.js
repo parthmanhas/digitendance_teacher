@@ -13,22 +13,29 @@ const TeacherProfileScreen = props => {
     return (
         <Container style={styles.screen}>
             <View style={styles.informationDisplayContainer}>
-            <Text style={{fontSize: 22, fontWeight: 'bold'}}>WELCOME {username}</Text>
+                <Text style={{ fontSize: 22, fontWeight: 'bold' }}>WELCOME {username}</Text>
             </View>
             <View style={styles.buttonContainer}>
                 <Button
                     full
                     success
-                    style={{...styles.button, backgroundColor: colors.BUTTON_DARK }}
+                    style={{ ...styles.button, backgroundColor: colors.BUTTON_DARK }}
                     onPress={() => props.navigation.navigate('Event')}>
                     <Text style={{ color: 'white' }}>Create Event</Text>
                 </Button>
                 <Button
                     full
                     success
-                    style={{...styles.button, backgroundColor: colors.BUTTON_DARK }}
-                    onPress={() => props.navigation.navigate('ViewAttendanceByDate', {username:username})}>
+                    style={{ ...styles.button, backgroundColor: colors.BUTTON_DARK }}
+                    onPress={() => props.navigation.navigate('ViewAttendanceByDate', { username: username })}>
                     <Text style={{ color: 'white' }}>View Attendance</Text>
+                </Button>
+                <Button
+                    full
+                    style={{ ...styles.button, backgroundColor: colors.BUTTON_DARK }}
+                    onPress={() => props.navigation.navigate('ExportAttendance', { username: username })}
+                >
+                    <Text style={{ color: 'white' }}>Export Attendance</Text>
                 </Button>
             </View>
 
@@ -48,12 +55,12 @@ const styles = StyleSheet.create({
         margin: 10,
         justifyContent: 'center',
     },
-    informationDisplayContainer:{
+    informationDisplayContainer: {
         margin: 10,
-        padding:10,
-        alignItems:'center',
+        padding: 10,
+        alignItems: 'center',
     },
-    button:{
+    button: {
         margin: 10,
         borderRadius: 6
     }

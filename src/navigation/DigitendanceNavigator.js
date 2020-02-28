@@ -9,6 +9,7 @@ import TeacherProfileScreen from '../screens/TeacherProfileScreen';
 import ViewAttendanceByDateScreen from '../screens/ViewAttendanceByDateScreen';
 import ViewAttendanceByLectureScreen from '../screens/ViewAttendanceByLectureScreen';
 import ViewAttendanceByStudentsScreen from '../screens/ViewAttendanceByStudentsScreen';
+import ExportAttendanceScreen from '../screens/ExportAttendanceScreen';
 
 const RootNavigator = createStackNavigator({
 
@@ -33,6 +34,9 @@ const RootNavigator = createStackNavigator({
     ViewAttendanceByStudents: {
         screen: ViewAttendanceByStudentsScreen,
     },
+    ExportAttendance:{
+        screen: ExportAttendanceScreen,
+    }
 
 }, {
     defaultNavigationOptions:{

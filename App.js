@@ -25,10 +25,26 @@ const App: () => React$Node = () => {
       const granted = await PermissionsAndroid.request(
         PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
         {
-          title: 'Cool Photo App Camera Permission',
-          message:
-            'Cool Photo App needs access to your camera ' +
-            'so you can take awesome pictures.',
+          title: 'Digitendance Location Permission',
+          message: 'Digitendance needs access to your location.',
+          buttonNeutral: 'Ask Me Later',
+          buttonNegative: 'Cancel',
+          buttonPositive: 'OK',
+        },
+      );
+      setAccess(granted === PermissionsAndroid.RESULTS.GRANTED)
+    } catch (err) {
+      Alert.alert(err.toString());
+    }
+  }
+
+  async function hasReadWritePermission() {
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+        {
+          title: 'Digitendance Write Permission',
+          message: 'Digitendance needs access to your storage.',
           buttonNeutral: 'Ask Me Later',
           buttonNegative: 'Cancel',
           buttonPositive: 'OK',
@@ -54,6 +70,7 @@ const App: () => React$Node = () => {
 
   useEffect(() => {
     hasLocation();
+    hasReadWritePermission();
     if (!position) {
       findMyLocation();
     }
@@ -67,7 +84,7 @@ const App: () => React$Node = () => {
 
   return (
     <Provider store={store}>
-      {access ? <DigitendanceNavigator /> : <Text>Please Enable Location and Restart the app</Text>}
+      {access ? <DigitendanceNavigator /> : <Text>Please Enable Required Permissions and Restart the app</Text>}
     </Provider>
   );
 };

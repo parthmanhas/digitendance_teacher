@@ -18,6 +18,7 @@
     "react": "16.9.0",
     "react-native": "0.61.5",
     "react-native-crypto-js": "^1.0.0",
+    "react-native-fs": "^2.16.6",
     "react-native-geolocation-service": "^4.0.0",
     "react-native-gesture-handler": "^1.5.3",
     "react-native-ignore-warnings": "^0.1.1",
@@ -28,11 +29,13 @@
     "react-native-safe-area-context": "^0.6.2",
     "react-native-screens": "^2.0.0-alpha.29",
     "react-native-share": "^3.0.0",
+    "react-native-simple-toast": "^1.0.0",
     "react-native-svg": "^11.0.1",
     "react-navigation": "^4.0.10",
     "react-navigation-stack": "^2.0.16",
     "react-redux": "^7.2.0",
-    "redux": "^4.0.5"
+    "redux": "^4.0.5",
+    "xlsx": "^0.15.5"
   },
   "devDependencies": {
     "@babel/core": "7.8.3",

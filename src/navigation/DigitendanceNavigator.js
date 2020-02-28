@@ -14,47 +14,30 @@ const RootNavigator = createStackNavigator({
 
     Home: {
         screen: HomeScreen,
-        navigationOptions: {
-            headerShown: false,
-        }
     },
     Teacher: {
         screen: TeacherProfileScreen,
-        navigationOptions: {
-            headerShown: false
-        }
     },
     Event: {
         screen: CreateEventScreen,
-        navigationOptions: {
-            headerShown: false
-        }
     },
     ViewAttendanceByDate: {
         screen: ViewAttendanceByDateScreen,
-        navigationOptions: {
-            headerShown: false
-        }
     },
     QRCodeGenerated: {
         screen: QRCodeGeneratedScreen,
-        navigationOptions: {
-            headerShown: false
-        }
     },
     ViewAttendanceByLecture: {
         screen: ViewAttendanceByLectureScreen,
-        navigationOptions: {
-            headerShown: false
-        }
     },
     ViewAttendanceByStudents: {
         screen: ViewAttendanceByStudentsScreen,
-        navigationOptions: {
-            headerShown: false
-        }
     },
 
+}, {
+    defaultNavigationOptions:{
+        headerShown: false,
+    }
 });
 
 const styles = StyleSheet.create({});

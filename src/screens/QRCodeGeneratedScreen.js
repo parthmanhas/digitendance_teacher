@@ -23,9 +23,17 @@ const QRCodeGeneratedScreen = props => {
             };
 
             Share.open(shareImageBase64)
-            .then(() => {})
-            .catch(() => {});
+                .then(() => { })
+                .catch(() => { });
         })
+    }
+
+    const onProfilePress = () => {
+        props.navigation.navigate('Teacher');
+    }
+
+    const onCreateAnotherEventPress = () => {
+        props.navigation.navigate('Teacher');
     }
 
 
@@ -39,9 +47,16 @@ const QRCodeGeneratedScreen = props => {
                     eventSecret={eventSecret}
                     eventTime={eventTime}
                     qrRef={setQRRef} />
-                <View style={styles.shareButton}>
+                <View style={{ ...styles.button }}>
                     <Button title="Share" onPress={shareQr} />
                 </View>
+                <View style={styles.button}>
+                    <Button title="Go to profile" onPress={onProfilePress} />
+                </View>
+                <View style={styles.button}>
+                    <Button title="Create another Event" onPress={onCreateAnotherEventPress} />
+                </View>
+
             </View>
 
         </View>
@@ -54,12 +69,11 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
-    shareButton: {
-        margin: 10,
-        borderRadius: 6,
-    },
     qr: {
         padding: 5,
+    },
+    button: {
+        marginVertical: 5
     }
 });
 

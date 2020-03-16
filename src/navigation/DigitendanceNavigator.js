@@ -36,7 +36,7 @@ const RootNavigator = createStackNavigator({
     },
     ExportAttendance:{
         screen: ExportAttendanceScreen,
-    }
+    },
 
 }, {
     defaultNavigationOptions:{

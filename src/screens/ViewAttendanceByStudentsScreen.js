@@ -40,7 +40,7 @@ const ViewAttendanceByStudentsScreen = props => {
         console.log(data);
 
         var RNFS = require('react-native-fs');
-        var path = RNFS.ExternalStorageDirectoryPath + '/unique.txt';
+        var path = RNFS.ExternalStorageDirectoryPath + `/${filename}.csv`;
         RNFS.writeFile(path, data, 'utf8')
             .then((success) => {
                 console.log('FILE WRITTEN!');
@@ -49,6 +49,7 @@ const ViewAttendanceByStudentsScreen = props => {
             })
             .catch((err) => {
                 Alert.alert(err.toString());
+                Toast.show('An error occured! Please Try Again')
             });
     }
 
@@ -90,11 +91,12 @@ const ViewAttendanceByStudentsScreen = props => {
                 style={styles.modal}
             >
                 <View style={{ padding: 50 }}>
+                    <Text style={{textAlign : 'center', padding: 10, fontSize: 18}}>Enter Filename</Text>
                     <TextInput
                         placeholder={filename}
                         onChangeText={(text) => setFilename(text)}
                         value={filename}
-                        style={{ textAlign: 'center', backgroundColor: 'white' }}
+                        style={{ textAlign: 'center', backgroundColor: 'white', borderRadius: 6 }}
                     />
                     <View style={styles.buttonContainer}>
                         <Button

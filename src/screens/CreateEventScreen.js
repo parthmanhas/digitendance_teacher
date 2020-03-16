@@ -15,17 +15,18 @@ const CreateEventScreen = props => {
     const [newEventDate, setNewEventDate] = useState();
     const [newEventSecret, setNewEventSecret] = useState();
     const [newEventTime, setNewEventTime] = useState();
+    const [newEventExpiryTime, setNewEventExpiryTime] = useState();
     const [disableResetButton, setDisableResetButton] = useState(true);
     const [disableGenerateButton, setdisableGenerateButton] = useState(true);
     const [displayModal, setDisplayModal] = useState(ActiveDisplayModal);
 
     const checkValidInput = () => {
-        
+
         if (newEventName && newEventDate && newEventSecret && newEventTime) {
             setdisableGenerateButton(false);
             setDisableResetButton(false);
         }
-        else if(newEventName || newEventDate || newEventSecret || newEventTime){
+        else if (newEventName || newEventDate || newEventSecret || newEventTime) {
             setDisableResetButton(false);
         }
     }
@@ -35,6 +36,7 @@ const CreateEventScreen = props => {
         setNewEventDate();
         setNewEventSecret();
         setNewEventTime();
+        setNewEventExpiryTime();
         setDisableResetButton(true);
         setdisableGenerateButton(true);
     }
@@ -51,11 +53,12 @@ const CreateEventScreen = props => {
     }
 
 
-    const handleInputChange = (eventName, eventDate, eventSecret, eventTime) => {
+    const handleInputChange = (eventName, eventDate, eventSecret, eventTime, expiryTime) => {
         setNewEventName(eventName);
         setNewEventDate(eventDate);
         setNewEventSecret(eventSecret);
         setNewEventTime(eventTime);
+        setNewEventExpiryTime(expiryTime);
     }
 
     useEffect(() => {
@@ -86,6 +89,7 @@ const CreateEventScreen = props => {
                 <Text>{newEventDate ? `Event Date : ${newEventDate}` : ''}</Text>
                 <Text>{newEventTime ? `Event Time : ${newEventTime}` : ''}</Text>
                 <Text>{newEventSecret ? `Event Secret : ${newEventSecret}` : ''}</Text>
+                <Text>{newEventExpiryTime ? `QR Code Expiry Time : ${newEventExpiryTime}` : ''}</Text>
             </View>
             {/* LECTURE OPTIONS */}
             <EventDisplayModal

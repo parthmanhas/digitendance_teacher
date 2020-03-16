@@ -14,6 +14,8 @@ const EventDisplayModal = props => {
     const [eventTime, setEventTime] = useState();
     const [displayDatePicker, setDisplayDatePicker] = useState(false);
     const [displayTimePicker, setDisplayTimePicker] = useState(false);
+    const [expiryTime, setExpiryTime] = useState();
+    const [displayExpiryTimePicker, setDisplayExpiryTimePicker] = useState(false);
 
 
     const selectDate = () => {
@@ -45,7 +47,7 @@ const EventDisplayModal = props => {
     }
 
     const handleModalDoneButton = () => {
-        props.handleInputChange(eventName, eventDate, eventSecret, eventTime);
+        props.handleInputChange(eventName, eventDate, eventSecret, eventTime, expiryTime);
         props.onButtonPress();
     }
 
@@ -54,6 +56,20 @@ const EventDisplayModal = props => {
         setEventName();
         setEventSecret();
         setEventTime();
+        setExpiryTime();
+    }
+
+    const handleExpiryTimeConfirm = (time) => {
+        setDisplayExpiryTimePicker(false);
+        setExpiryTime(time.toString().substr(15, 6));
+    }
+
+    const handleExpiryTimeCancel = () => {
+        setDisplayExpiryTimePicker(false);
+    }
+
+    const selectExpiryTime = () => {
+        setDisplayExpiryTimePicker(true);
     }
 
     useEffect(() => {
@@ -67,7 +83,7 @@ const EventDisplayModal = props => {
             onRequestClose={props.onButtonPress}
             animationType='fade'>
             <View style={styles.content}>
-                <View style={{margin: 15}}>
+                <View style={{ margin: 15 }}>
                     <Text style={{ fontSize: 25, fontWeight: 'bold' }}>{props.title} Options</Text>
                 </View>
                 <TextInput
@@ -84,19 +100,28 @@ const EventDisplayModal = props => {
                 <TouchableOpacity onPress={selectTime}>
                     <Text style={{ fontSize: modalFontSize }}>{eventTime ? eventTime.toString() : "Select Time"}</Text>
                 </TouchableOpacity>
-
+                <TouchableOpacity onPress={selectExpiryTime}>
+                    <Text style={{ fontSize: modalFontSize }}>{expiryTime ? expiryTime.toString() : "Select QR Expiry Time"}</Text>
+                </TouchableOpacity>
                 <DateTimePickerModal
                     isVisible={displayDatePicker}
                     mode="date"
                     onConfirm={handleDateConfirm}
                     onCancel={handleDateCancel}
                 />
-
+                
                 <DateTimePickerModal
                     isVisible={displayTimePicker}
                     mode="time"
                     onConfirm={handleTimeConfirm}
                     onCancel={handleTimeCancel}
+                />
+                
+                <DateTimePickerModal
+                    isVisible={displayExpiryTimePicker}
+                    mode="time"
+                    onConfirm={handleExpiryTimeConfirm}
+                    onCancel={handleExpiryTimeCancel}
                 />
 
                 <TextInput

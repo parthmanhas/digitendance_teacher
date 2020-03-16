@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Button } from 'react-native';
+import { View, Text, StyleSheet, Button, TouchableOpacity } from 'react-native';
 import QRCodeGenerate from '../components/QRCodeGenerate';
 import Share from 'react-native-share';
+import DateTimePickerModal from "react-native-modal-datetime-picker";
 
 const QRCodeGeneratedScreen = props => {
     const eventName = props.navigation.getParam('eventName', undefined);
@@ -35,7 +36,6 @@ const QRCodeGeneratedScreen = props => {
     const onCreateAnotherEventPress = () => {
         props.navigation.navigate('Teacher');
     }
-
 
     return (
         <View style={styles.screen}>

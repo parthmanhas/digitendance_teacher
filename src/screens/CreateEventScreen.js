@@ -147,7 +147,8 @@ const CreateEventScreen = props => {
                             eventName: newEventName,
                             eventDate: newEventDate,
                             eventSecret: newEventSecret,
-                            eventTime: newEventTime
+                            eventTime: newEventTime,
+                            expiryTime: newEventExpiryTime
                         });
                     }
                     } />

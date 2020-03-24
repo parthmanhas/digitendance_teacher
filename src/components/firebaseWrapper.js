@@ -5,6 +5,8 @@ import store from '../store/store';
 const BASE_PATH = '';
 
 export function Login(email, password, props, setShowActivityIndicator) {
+    email = 'teacher2@gmail.com';
+    password = 'teacher2';
     firebase.auth().signInWithEmailAndPassword(email, password)
         .then(() => {
             props.navigation.navigate('Teacher', { email: email });
@@ -28,7 +30,7 @@ export function SignUp(email, password, setShowActivityIndicator) {
         })
 }
 
-export function AddEvent(eventName, eventDate, eventSecret, eventTime) {
+export function AddEvent(eventName, eventDate, eventSecret, eventTime, expiryTime) {
     const db = firebase.database();
     let currentUserEmail = firebase.auth().currentUser.email.split('@')[0];
     const path = BASE_PATH + `${currentUserEmail}/${eventDate}/${eventName}`;
@@ -43,7 +45,8 @@ export function AddEvent(eventName, eventDate, eventSecret, eventTime) {
                 latitude: latitude,
                 longitude: longitude,
                 accuracy: accuracy
-            }
+            },
+            expiryTime: expiryTime
         }
     });
     db.ref(path + '/attendance').set({ init: 1 });

@@ -2,13 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Button, TouchableOpacity } from 'react-native';
 import QRCodeGenerate from '../components/QRCodeGenerate';
 import Share from 'react-native-share';
-import DateTimePickerModal from "react-native-modal-datetime-picker";
 
 const QRCodeGeneratedScreen = props => {
     const eventName = props.navigation.getParam('eventName', undefined);
     const eventDate = props.navigation.getParam('eventDate', undefined);
     const eventSecret = props.navigation.getParam('eventSecret', undefined);
     const eventTime = props.navigation.getParam('eventTime', undefined);
+    const expiryTime = props.navigation.getParam('expiryTime', undefined);
 
     //store reference of qr code generated in this variable
     //which is passed as prop to QRCodeGenerate component
@@ -46,7 +46,8 @@ const QRCodeGeneratedScreen = props => {
                     eventDate={eventDate}
                     eventSecret={eventSecret}
                     eventTime={eventTime}
-                    qrRef={setQRRef} />
+                    qrRef={setQRRef}
+                    expiryTime={expiryTime} />
                 <View style={{ ...styles.button }}>
                     <Button title="Share" onPress={shareQr} />
                 </View>

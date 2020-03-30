@@ -30,10 +30,37 @@ export function SignUp(email, password, setShowActivityIndicator) {
         })
 }
 
-export function AddEvent(eventName, eventDate, eventSecret, eventTime, expiryTime) {
+export function AddEvent(eventName, eventDate, eventSecret, eventTime, expiryTime, eventType) {
     const db = firebase.database();
     let currentUserEmail = firebase.auth().currentUser.email.split('@')[0];
-    const path = BASE_PATH + `${currentUserEmail}/${eventDate}/${eventName}`;
+    const path = BASE_PATH + `${currentUserEmail}/${eventType}/${eventDate}/${eventName}`;
+
+
+    // addEvent in seperate key 
+    const allEventsTakenTillNowCollectionPath = BASE_PATH + `/${currentUserEmail}/allEventTaken`;
+    const allLecturesTakenPath = allEventsTakenTillNowCollectionPath + '/allLecturesTaken';
+    const allQuizTakenPath = allEventsTakenTillNowCollectionPath + '/allQuizTaken';
+    const allTestTakenPath = allEventsTakenTillNowCollectionPath + '/allTestTaken';
+    const allWorkshopTakenPath = allEventsTakenTillNowCollectionPath + '/allWorkshopTaken';
+
+    console.log('eventType ' + eventType);
+    switch(eventType){
+        case 'lecture':
+            db.ref(allLecturesTakenPath).child(eventName).set(1);
+            break;
+        case 'quiz':
+            db.ref(allQuizTakenPath).child(eventName).set(1);
+            break;
+        case 'test':
+            db.ref(allTestTakenPath).child(eventName).set(1);
+            break;
+        case 'workshop':
+            db.ref(allWorkshopTakenPath).child(eventName).set(1);
+            break;
+        default:
+            Alert.alert('An error occured. firebaseWrapper -> AddEvent -> switch(eventType)');
+    }
+
     const latitude = store.getState().location.latitude;
     const longitude = store.getState().location.longitude;
     const accuracy = store.getState().location.accuracy;
@@ -51,9 +78,9 @@ export function AddEvent(eventName, eventDate, eventSecret, eventTime, expiryTim
     });
     db.ref(path + '/attendance').set({ init: 1 });
 
-
     return currentUserEmail;
 }
+
 
 export function ViewAttendanceByDate(username, setData, setDataLoaded) {
     const path = BASE_PATH + username;
@@ -87,5 +114,7 @@ export function ViewAttendanceByStudent(username, setData, date, lecture, setDat
         })
 }
 
+export function GetAttendanceData(){
 
+}
 

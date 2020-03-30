@@ -2,6 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Button, Picker, TextInput, Modal } from 'react-native';
 import EventDisplayModal from '../components/EventDisplayModal';
 import ActiveDisplayModal from '../components/ActiveDisplayModal';
+import Lecture from '../models/Lecture';
+import Quiz from '../models/Quiz';
+import Test from '../models/Test';
+import Workshop from '../models/Workshop';
 
 const CreateEventScreen = props => {
 
@@ -19,6 +23,8 @@ const CreateEventScreen = props => {
     const [disableResetButton, setDisableResetButton] = useState(true);
     const [disableGenerateButton, setdisableGenerateButton] = useState(true);
     const [displayModal, setDisplayModal] = useState(ActiveDisplayModal);
+
+    const [eventType, setEventType] = useState();
 
     const checkValidInput = () => {
 
@@ -39,6 +45,7 @@ const CreateEventScreen = props => {
         setNewEventExpiryTime();
         setDisableResetButton(true);
         setdisableGenerateButton(true);
+        setEventType();
     }
 
     const handleModalBackdrop = () => {
@@ -59,6 +66,23 @@ const CreateEventScreen = props => {
         setNewEventSecret(eventSecret);
         setNewEventTime(eventTime);
         setNewEventExpiryTime(expiryTime);
+    }
+
+    const handleGenerateQRCode = () => {
+
+        let eventDetails = {
+            eventName: newEventName,
+            eventDate: newEventDate,
+            eventSecret: newEventSecret,
+            eventTime: newEventTime,
+            expiryTime: newEventExpiryTime,
+            eventType: eventType
+        }
+
+        props.navigation.navigate('QRCodeGenerated', {
+            eventDetails : eventDetails
+        });
+
     }
 
     useEffect(() => {
@@ -102,6 +126,8 @@ const CreateEventScreen = props => {
                 newEventDate={newEventDate}
                 newEventSecret={newEventSecret}
                 onButtonPress={onEventModalDoneButtonPress}
+                setEventType={setEventType}
+                eventType='lecture'
             />
             {/* QUIZ OPTIONS */}
             <EventDisplayModal
@@ -112,7 +138,9 @@ const CreateEventScreen = props => {
                 newEventName={newEventName}
                 newEventDate={newEventDate}
                 newEventSecret={newEventSecret}
-                onButtonPress={onEventModalDoneButtonPress} />
+                onButtonPress={onEventModalDoneButtonPress}
+                setEventType={setEventType}
+                eventType='quiz' />
             {/* TEST OPTIONS */}
             <EventDisplayModal
                 displayOption={displayModal.test}
@@ -122,7 +150,9 @@ const CreateEventScreen = props => {
                 newEventName={newEventName}
                 newEventDate={newEventDate}
                 newEventSecret={newEventSecret}
-                onButtonPress={onEventModalDoneButtonPress} />
+                onButtonPress={onEventModalDoneButtonPress}
+                setEventType={setEventType}
+                eventType='test' />
             {/* WORKSHOP OPTIONS */}
             <EventDisplayModal
                 displayOption={displayModal.workshop}
@@ -132,7 +162,9 @@ const CreateEventScreen = props => {
                 newEventName={newEventName}
                 newEventDate={newEventDate}
                 newEventSecret={newEventSecret}
-                onButtonPress={onEventModalDoneButtonPress} />
+                onButtonPress={onEventModalDoneButtonPress}
+                setEventType={setEventType}
+                eventType='workshop' />
             <View style={styles.buttonContainer}>
                 <View style={styles.button}>
                     <Button style={{ margin: 10 }}
@@ -142,16 +174,7 @@ const CreateEventScreen = props => {
                         onPress={handleResetButton} />
                 </View>
                 <View style={styles.button}>
-                    <Button title="GENERATE QR CODE" disabled={disableGenerateButton} onPress={() => {
-                        props.navigation.navigate('QRCodeGenerated', {
-                            eventName: newEventName,
-                            eventDate: newEventDate,
-                            eventSecret: newEventSecret,
-                            eventTime: newEventTime,
-                            expiryTime: newEventExpiryTime
-                        });
-                    }
-                    } />
+                    <Button title="GENERATE QR CODE" disabled={disableGenerateButton} onPress={handleGenerateQRCode} />
                 </View>
             </View>
         </View>

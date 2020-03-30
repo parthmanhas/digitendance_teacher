@@ -47,6 +47,7 @@ const EventDisplayModal = props => {
     }
 
     const handleModalDoneButton = () => {
+        props.setEventType(props.eventType);
         props.handleInputChange(eventName, eventDate, eventSecret, eventTime, expiryTime);
         props.onButtonPress();
     }

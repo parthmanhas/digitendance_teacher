@@ -4,12 +4,14 @@ import QRCodeGenerate from '../components/QRCodeGenerate';
 import Share from 'react-native-share';
 
 const QRCodeGeneratedScreen = props => {
-    const eventName = props.navigation.getParam('eventName', undefined);
-    const eventDate = props.navigation.getParam('eventDate', undefined);
-    const eventSecret = props.navigation.getParam('eventSecret', undefined);
-    const eventTime = props.navigation.getParam('eventTime', undefined);
-    const expiryTime = props.navigation.getParam('expiryTime', undefined);
+    // const eventName = props.navigation.getParam('eventName', undefined);
+    // const eventDate = props.navigation.getParam('eventDate', undefined);
+    // const eventSecret = props.navigation.getParam('eventSecret', undefined);
+    // const eventTime = props.navigation.getParam('eventTime', undefined);
+    // const expiryTime = props.navigation.getParam('expiryTime', undefined);
 
+    const event = props.navigation.getParam('eventDetails', undefined);
+    console.log(event);
     //store reference of qr code generated in this variable
     //which is passed as prop to QRCodeGenerate component
     const [qrRef, setQRRef] = useState('');
@@ -42,12 +44,13 @@ const QRCodeGeneratedScreen = props => {
             <Text style={{ fontSize: 22, margin: 10 }}>QR CODE GENERATED!</Text>
             <View style={styles.qr}>
                 <QRCodeGenerate
-                    eventName={eventName}
-                    eventDate={eventDate}
-                    eventSecret={eventSecret}
-                    eventTime={eventTime}
+                    eventName={event.eventName}
+                    eventDate={event.eventDate}
+                    eventSecret={event.eventSecret}
+                    eventTime={event.eventTime}
                     qrRef={setQRRef}
-                    expiryTime={expiryTime} />
+                    expiryTime={event.expiryTime}
+                    eventType={event.eventType} />
                 <View style={{ ...styles.button }}>
                     <Button title="Share" onPress={shareQr} />
                 </View>

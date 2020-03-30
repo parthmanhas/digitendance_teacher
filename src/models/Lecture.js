@@ -1,9 +1,10 @@
 class Lecture{
-    constructor(id, name, date, secretKey){
-        this.id = id;
+    constructor(name, date, expiryTime, secretKey){
         this.name = name;
         this.date = date;
         this.secretKey = secretKey;
+        this.expiryTime = expiryTime;
+        this.eventType = 'lecture';
     }
 }
 

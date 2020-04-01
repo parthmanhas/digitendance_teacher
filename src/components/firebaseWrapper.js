@@ -7,6 +7,9 @@ const BASE_PATH = '';
 export function Login(email, password, props, setShowActivityIndicator) {
     email = 'teacher2@gmail.com';
     password = 'teacher2';
+
+    //set username in store so it is available globally
+
     firebase.auth().signInWithEmailAndPassword(email, password)
         .then(() => {
             props.navigation.navigate('Teacher', { email: email });
@@ -114,7 +117,57 @@ export function ViewAttendanceByStudent(username, setData, date, lecture, setDat
         })
 }
 
-export function GetAttendanceData(){
-
+export function ViewAllLecturesTaken(setGetData, setDataLoaded){
+    let username = store.getState().username.username;
+    const path = `${username}/allEventTaken/allLecturesTaken`;
+    firebase.database().ref(path).once('value')
+        .then(snap => {
+            setGetData(snap.val());
+            setDataLoaded(true);
+        })
+        .catch(err => {
+            Alert.alert(err.message);
+        })
 }
 
+export function ViewAllQuizTaken(setGetData, setDataLoaded){
+    const username = store.getState().username.username;
+    const path = `${username}/allEventTaken/allQuizTaken`;
+
+    firebase.database().ref(path).once('value')
+        .then(snap => {
+            setGetData(snap.val());
+            setDataLoaded(true);
+        })
+        .catch(err => {
+            Alert.alert(err.message);
+        })
+}
+
+export function ViewAllTestTaken(setGetData, setDataLoaded){
+    const username = store.getState().username.username;
+    const path = `${username}/allEventTaken/allTestTaken`;
+
+    firebase.database().ref(path).once('value')
+        .then(snap => {
+            setGetData(snap.val());
+            setDataLoaded(true);
+        })
+        .catch(err => {
+            Alert.alert(err.message);
+        })
+}
+
+export function ViewAllWorkshopTaken(setGetData, setDataLoaded){
+    const username = store.getState().username.username;
+    const path = `${username}/allEventTaken/allWorkshopTaken`;
+
+    firebase.database().ref(path).once('value')
+        .then(snap => {
+            setGetData(snap.val());
+            setDataLoaded(true);
+        })
+        .catch(err => {
+            Alert.alert(err.message);
+        })
+}

@@ -10,6 +10,11 @@ import ViewAttendanceByDateScreen from '../screens/ViewAttendanceByDateScreen';
 import ViewAttendanceByLectureScreen from '../screens/ViewAttendanceByLectureScreen';
 import ViewAttendanceByStudentsScreen from '../screens/ViewAttendanceByStudentsScreen';
 import ExportAttendanceScreen from '../screens/ExportAttendanceScreen';
+import AllEventsTakenScreen from '../screens/AllEventsTakenScreen';
+import ViewAllLecturesTakenScreen from '../screens/ViewAllLecturesTakenScreen';
+import ViewAllQuizTakenScreen from '../screens/ViewAllQuizTakenScreen';
+import ViewAllTestTakenScreen from '../screens/ViewAllTestTakenScreen';
+import ViewAllWorkshopTakenScreen from '../screens/ViewAllWorkshopTakenScreen';
 
 const RootNavigator = createStackNavigator({
 
@@ -36,6 +41,21 @@ const RootNavigator = createStackNavigator({
     },
     ExportAttendance:{
         screen: ExportAttendanceScreen,
+    },
+    AllEventsTaken:{
+        screen : AllEventsTakenScreen,
+    },
+    AllLecturesTaken:{
+        screen : ViewAllLecturesTakenScreen,
+    },
+    AllTestTaken:{
+        screen : ViewAllTestTakenScreen,
+    },
+    AllQuizTaken:{
+        screen : ViewAllQuizTakenScreen,
+    },
+    AllWorkshopTaken:{
+        screen : ViewAllWorkshopTakenScreen,
     },
 
 }, {

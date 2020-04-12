@@ -3,7 +3,7 @@ import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 
 import HomeScreen from '../screens/HomeScreen';
-import QRCodeGeneratedScreen from '../screens/QRCodeGeneratedScreen';
+import DisplayStandAloneEventQRCodeScreen from '../screens/DisplayStandAloneEventQRCodeScreen';
 import CreateEventScreen from '../screens/CreateEventScreen';
 import TeacherProfileScreen from '../screens/TeacherProfileScreen';
 import ViewAttendanceByDateScreen from '../screens/ViewAttendanceByDateScreen';
@@ -15,6 +15,8 @@ import ViewAllLecturesTakenScreen from '../screens/ViewAllLecturesTakenScreen';
 import ViewAllQuizTakenScreen from '../screens/ViewAllQuizTakenScreen';
 import ViewAllTestTakenScreen from '../screens/ViewAllTestTakenScreen';
 import ViewAllWorkshopTakenScreen from '../screens/ViewAllWorkshopTakenScreen';
+import CreateEventStandAloneEnterDetailsScreen from '../screens/CreateEventStandAloneEnterDetailsScreen';
+import CreateEventForClassEnterDetailsScreen from '../screens/CreateEventForClassEnterDetailsScreen';
 
 const RootNavigator = createStackNavigator({
 
@@ -27,11 +29,17 @@ const RootNavigator = createStackNavigator({
     Event: {
         screen: CreateEventScreen,
     },
+    CreateStandAloneEvent:{
+        screen: CreateEventStandAloneEnterDetailsScreen,
+    },
+    CreateClassEvent:{
+        screen: CreateEventForClassEnterDetailsScreen,
+    },
     ViewAttendanceByDate: {
         screen: ViewAttendanceByDateScreen,
     },
     QRCodeGenerated: {
-        screen: QRCodeGeneratedScreen,
+        screen: DisplayStandAloneEventQRCodeScreen,
     },
     ViewAttendanceByLecture: {
         screen: ViewAttendanceByLectureScreen,

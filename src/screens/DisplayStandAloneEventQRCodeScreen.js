@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, Button, TouchableOpacity } from 'react-native';
 import QRCodeGenerate from '../components/QRCodeGenerate';
 import Share from 'react-native-share';
 
-const QRCodeGeneratedScreen = props => {
+const DisplayStandAloneEventQRCodeScreen = props => {
     // const eventName = props.navigation.getParam('eventName', undefined);
     // const eventDate = props.navigation.getParam('eventDate', undefined);
     // const eventSecret = props.navigation.getParam('eventSecret', undefined);
@@ -81,4 +81,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default QRCodeGeneratedScreen;
+export default DisplayStandAloneEventQRCodeScreen;

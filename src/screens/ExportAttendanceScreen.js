@@ -43,7 +43,7 @@ const ExportAttendanceScreen = props => {
 
     return (
         <View style={styles.screen}>
-            <Text style={{ margin: 15, fontSize: 22, fontWeight: 'bold', marginBottom: 30 }}>Select A Date</Text>
+            <Text style={{ margin: 15, fontSize: 22, fontWeight: 'bold', marginBottom: 30 }}>Select from events</Text>
             <ActivityIndicator animating={!dataLoaded} />
             <FlatList
                 data={dates}
@@ -52,7 +52,6 @@ const ExportAttendanceScreen = props => {
                         <Button
                             full
                             rounded
-                            
                             style={itemData.item.selected ? styles.selected : styles.unselected}
                             onPress={() => {
                                 itemData.item.selected = !itemData.item.selected;
@@ -79,6 +78,7 @@ const ExportAttendanceScreen = props => {
                 <Text style={{ color: 'white' }}>Export to Excel Format</Text>
             </Button>
         </View>
+        
     );
 }
 

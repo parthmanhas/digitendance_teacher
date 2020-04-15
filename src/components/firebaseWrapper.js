@@ -2,6 +2,7 @@ import { Alert } from 'react-native';
 import * as firebase from 'firebase';
 import store from '../store/store';
 import { setUsername } from '../store/actions/username';
+import { setClassDetails } from '../store/actions/classDetails';
 
 const BASE_PATH = '';
 
@@ -42,7 +43,7 @@ export function AddEvent(eventName, eventDate, eventSecret, eventTime, expiryTim
     let currentUserEmail = firebase.auth().currentUser.email.split('@')[0];
     const path = BASE_PATH + `${currentUserEmail}/${eventType}/${eventDate}/${eventName}`;
     const datePath = BASE_PATH + `${currentUserEmail}/allDates`;
-
+    const classPath = BASE_PATH + `${currentUserEmail}/allClasses`
     // addEvent in seperate key 
     const allEventsTakenTillNowCollectionPath = BASE_PATH + `/${currentUserEmail}/allEventTaken`;
     const allLecturesTakenPath = allEventsTakenTillNowCollectionPath + '/allLecturesTaken';
@@ -53,8 +54,11 @@ export function AddEvent(eventName, eventDate, eventSecret, eventTime, expiryTim
     //add date in date root key
     db.ref(datePath).child(eventDate).set(1);
 
+    //add initialise class path
+    db.ref(classPath).child(init).set(1);
+
     // console.log('eventType ' + eventType);
-    switch(eventType){
+    switch (eventType) {
         case 'lecture':
             db.ref(allLecturesTakenPath).child(eventName).set(1);
             break;
@@ -124,7 +128,7 @@ export function ViewAttendanceByStudent(username, setData, date, lecture, setDat
         })
 }
 
-export function ViewAllLecturesTaken(setGetData, setDataLoaded){
+export function ViewAllLecturesTaken(setGetData, setDataLoaded) {
     let username = store.getState().username.username;
     const path = `${username}/allEventTaken/allLecturesTaken`;
     firebase.database().ref(path).once('value')
@@ -137,7 +141,7 @@ export function ViewAllLecturesTaken(setGetData, setDataLoaded){
         })
 }
 
-export function ViewAllQuizTaken(setGetData, setDataLoaded){
+export function ViewAllQuizTaken(setGetData, setDataLoaded) {
     const username = store.getState().username.username;
     const path = `${username}/allEventTaken/allQuizTaken`;
 
@@ -151,7 +155,7 @@ export function ViewAllQuizTaken(setGetData, setDataLoaded){
         })
 }
 
-export function ViewAllTestTaken(setGetData, setDataLoaded){
+export function ViewAllTestTaken(setGetData, setDataLoaded) {
     const username = store.getState().username.username;
     const path = `${username}/allEventTaken/allTestTaken`;
 
@@ -165,7 +169,7 @@ export function ViewAllTestTaken(setGetData, setDataLoaded){
         })
 }
 
-export function ViewAllWorkshopTaken(setGetData, setDataLoaded){
+export function ViewAllWorkshopTaken(setGetData, setDataLoaded) {
     const username = store.getState().username.username;
     const path = `${username}/allEventTaken/allWorkshopTaken`;
 
@@ -173,6 +177,21 @@ export function ViewAllWorkshopTaken(setGetData, setDataLoaded){
         .then(snap => {
             setGetData(snap.val());
             setDataLoaded(true);
+        })
+        .catch(err => {
+            Alert.alert(err.message);
+        })
+}
+
+export function getAllClass(setData, setDataLoaded) {
+    let username = firebase.auth().currentUser.email.split('@')[0];
+    const path = BASE_PATH + `${username}/allClassess`;
+
+    firebase.database().ref(path).once('value')
+        .then(snap => {
+            // store.dispatch(setClassDetails(snap.val())); DELETE THIS REDUCER NO NEED
+            setDataLoaded(true);
+            setData(snap.val());
         })
         .catch(err => {
             Alert.alert(err.message);

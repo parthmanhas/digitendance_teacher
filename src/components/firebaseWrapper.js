@@ -1,6 +1,7 @@
 import { Alert } from 'react-native';
 import * as firebase from 'firebase';
 import store from '../store/store';
+import { setUsername } from '../store/actions/username';
 
 const BASE_PATH = '';
 
@@ -12,8 +13,11 @@ export function Login(email, password, props, setShowActivityIndicator) {
 
     firebase.auth().signInWithEmailAndPassword(email, password)
         .then(() => {
-            props.navigation.navigate('Teacher', { email: email });
+            const username = email.split('@')[0];
+            store.dispatch(setUsername(username));
+            // console.log(store.getState());
             setShowActivityIndicator(false);
+            props.navigation.navigate('Teacher');
         })
         .catch(error => {
             Alert.alert(error.message);
@@ -37,7 +41,7 @@ export function AddEvent(eventName, eventDate, eventSecret, eventTime, expiryTim
     const db = firebase.database();
     let currentUserEmail = firebase.auth().currentUser.email.split('@')[0];
     const path = BASE_PATH + `${currentUserEmail}/${eventType}/${eventDate}/${eventName}`;
-
+    const datePath = BASE_PATH + `${currentUserEmail}/allDates`;
 
     // addEvent in seperate key 
     const allEventsTakenTillNowCollectionPath = BASE_PATH + `/${currentUserEmail}/allEventTaken`;
@@ -46,7 +50,10 @@ export function AddEvent(eventName, eventDate, eventSecret, eventTime, expiryTim
     const allTestTakenPath = allEventsTakenTillNowCollectionPath + '/allTestTaken';
     const allWorkshopTakenPath = allEventsTakenTillNowCollectionPath + '/allWorkshopTaken';
 
-    console.log('eventType ' + eventType);
+    //add date in date root key
+    db.ref(datePath).child(eventDate).set(1);
+
+    // console.log('eventType ' + eventType);
     switch(eventType){
         case 'lecture':
             db.ref(allLecturesTakenPath).child(eventName).set(1);

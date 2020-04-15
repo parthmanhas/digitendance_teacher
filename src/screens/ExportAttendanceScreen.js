@@ -38,7 +38,7 @@ const ExportAttendanceScreen = props => {
             }
             setDates(getDates);
         }
-        console.log(dates);
+        // console.log(dates);
     }, [dataLoaded]);
 
     return (
@@ -61,7 +61,7 @@ const ExportAttendanceScreen = props => {
                                 else{
                                     setSelectedItem((selectedItem) => selectedItem.filter(item => item !== itemData.item))
                                 }
-                                console.log(selectedItem);
+                                // console.log(selectedItem);
                             }}
                         >
                             <Text style={{ color: 'white', padding: 10 }}>{itemData.item.date}</Text>

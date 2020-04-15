@@ -37,7 +37,7 @@ const ViewAttendanceByStudentsScreen = props => {
             data += `${student.studentRegNumber},${student.studentName},${student.comment},${student.deviceId},${student.manufacturer},${student.time},P\n`
         });
 
-        console.log(data);
+        // console.log(data);
 
         var RNFS = require('react-native-fs');
         var path = RNFS.ExternalStorageDirectoryPath + `/${filename}.csv`;

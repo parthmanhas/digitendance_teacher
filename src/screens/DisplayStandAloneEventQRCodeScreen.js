@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Button, TouchableOpacity } from 'react-native';
 import QRCodeGenerate from '../components/QRCodeGenerate';
 import Share from 'react-native-share';
+import store from '../store/store';
 
 const DisplayStandAloneEventQRCodeScreen = props => {
     // const eventName = props.navigation.getParam('eventName', undefined);
@@ -10,8 +11,8 @@ const DisplayStandAloneEventQRCodeScreen = props => {
     // const eventTime = props.navigation.getParam('eventTime', undefined);
     // const expiryTime = props.navigation.getParam('expiryTime', undefined);
 
-    const event = props.navigation.getParam('eventDetails', undefined);
-    console.log(event);
+    const event = store.getState().eventDetails;
+    // console.log(event);
     //store reference of qr code generated in this variable
     //which is passed as prop to QRCodeGenerate component
     const [qrRef, setQRRef] = useState('');

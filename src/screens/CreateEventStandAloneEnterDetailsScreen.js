@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Button, Picker, TextInput, Modal } from 'react-native';
 import EventDisplayModal from '../components/EventDisplayModal';
 import ActiveDisplayModal from '../components/ActiveDisplayModal';
-
+import store from '../store/store';
+import { setEventDetails } from '../store/actions/eventDetails';
 const CreateEventStandAloneEnterDetailsScreen = props => {
 
     const username = props.navigation.getParam('email', 'Teacher');
@@ -75,9 +76,10 @@ const CreateEventStandAloneEnterDetailsScreen = props => {
             eventType: eventType
         }
 
-        props.navigation.navigate('QRCodeGenerated', {
-            eventDetails : eventDetails
-        });
+        store.dispatch(setEventDetails(eventDetails));
+        // console.log(store.getState());
+
+        props.navigation.navigate('QRCodeGenerated');
 
     }
 

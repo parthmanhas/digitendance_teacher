@@ -32,11 +32,11 @@ const ViewAttendanceByDateScreen = props => {
             for (var i in data) {
                 
                 getDates.push({key : `${j}`, date: i});
-                console.log(getDates);
+                // console.log(getDates);
                 j++;
             }
             setDates(getDates);
-            console.log(dates);
+            // console.log(dates);
         }
         
 

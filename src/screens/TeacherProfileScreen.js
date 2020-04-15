@@ -2,7 +2,6 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Container, Content, Header, Form, Input, Item, Button, Label } from 'native-base';
 import * as colors from '../constants/colors';
-import { setUsername } from '../store/actions/username';
 import store from '../store/store';
 
 const TeacherProfileScreen = props => {
@@ -11,10 +10,9 @@ const TeacherProfileScreen = props => {
     //view attendance
 
     
-    const username = props.navigation.getParam('email', 'Teacher').split('@')[0];
-
-    //set username in the store globally
-    store.dispatch(setUsername(username));
+    // const username = props.navigation.getParam('email', 'Teacher').split('@')[0];
+    const username = store.getState().username.username;
+    console.log(username);
 
     return (
         <Container style={styles.screen}>

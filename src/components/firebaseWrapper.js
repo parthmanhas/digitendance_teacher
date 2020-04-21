@@ -197,3 +197,38 @@ export function getAllClass(setData, setDataLoaded) {
             Alert.alert(err.message);
         })
 }
+
+export function addClass(data) {
+    let username = firebase.auth().currentUser.email.split('@')[0];
+    const path = BASE_PATH + `${username}/allClassess`;
+
+    const db = firebase.database();
+
+    db.ref(path).update(data);
+
+}
+
+export function getClassData(className, setData, setDataLoaded) {
+    let username = firebase.auth().currentUser.email.split('@')[0];
+    const path = BASE_PATH + `${username}/allClassess/${className}`;
+
+    console.log(path);
+
+    const db = firebase.database();
+
+    db.ref(path).once('value')
+        .then(snap => {
+            setData(snap.val());
+            setDataLoaded(true);
+        })
+        .catch(err => Alert.alert(err.message));
+}
+
+export function updateClass(className, data){
+    let username = firebase.auth().currentUser.email.split('@')[0];
+    const path = BASE_PATH + `${username}/allClassess/${className}`;
+
+    const db = firebase.database();
+
+    db.ref(path).update(data).then(() => console.log('Updated!'));
+}

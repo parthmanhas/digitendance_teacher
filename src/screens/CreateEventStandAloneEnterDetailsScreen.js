@@ -8,6 +8,8 @@ const CreateEventStandAloneEnterDetailsScreen = props => {
 
     const username = props.navigation.getParam('email', 'Teacher');
 
+    const className = props.navigation.getParam('className', undefined);
+    
     const [pickerSelection, setPickerSelection] = useState('Select Event');
 
     const [renderModal, setRenderModal] = useState();
@@ -76,10 +78,24 @@ const CreateEventStandAloneEnterDetailsScreen = props => {
             eventType: eventType
         }
 
-        store.dispatch(setEventDetails(eventDetails));
-        // console.log(store.getState());
+        let dummyEventDetails = {
+            eventName: 'dummy lecture event',
+            eventDate: new Date().toString().substr(0, 15),
+            eventSecret: 'none',
+            eventTime: 'dummyTime',
+            expiryTime: 'dummyExpiryTime',
+            eventType: 'lecture'
+        }
 
-        props.navigation.navigate('QRCodeGenerated');
+        store.dispatch(setEventDetails(dummyEventDetails));
+        // console.log(store.getState());        
+
+        if (className === undefined)
+            props.navigation.navigate('QRCodeGenerated');
+        else
+            props.navigation.navigate('DisplayClassEventQRCodeScreen', {
+                className: className
+            });
 
     }
 
@@ -112,6 +128,13 @@ const CreateEventStandAloneEnterDetailsScreen = props => {
                 <Text>{newEventTime ? `Event Time : ${newEventTime}` : ''}</Text>
                 <Text>{newEventSecret ? `Event Secret : ${newEventSecret}` : ''}</Text>
                 <Text>{newEventExpiryTime ? `QR Code Expiry Time : ${newEventExpiryTime}` : ''}</Text>
+            </View>
+            <View style={styles.displayInformationContainer}>
+                <Text>{newEventName ? `Event Name : ${newEventName}` : 'dummy'}</Text>
+                <Text>{newEventDate ? `Event Date : ${newEventDate}` : 'dummy'}</Text>
+                <Text>{newEventTime ? `Event Time : ${newEventTime}` : 'dummy'}</Text>
+                <Text>{newEventSecret ? `Event Secret : ${newEventSecret}` : 'dummy'}</Text>
+                <Text>{newEventExpiryTime ? `QR Code Expiry Time : ${newEventExpiryTime}` : 'dummy'}</Text>
             </View>
             {/* LECTURE OPTIONS */}
             <EventDisplayModal
@@ -173,6 +196,9 @@ const CreateEventStandAloneEnterDetailsScreen = props => {
                 </View>
                 <View style={styles.button}>
                     <Button title="GENERATE QR CODE" disabled={disableGenerateButton} onPress={handleGenerateQRCode} />
+                </View>
+                <View style={styles.button}>
+                    <Button title="DumMy GENERATE QR CODE" disabled={!disableGenerateButton} onPress={handleGenerateQRCode} />
                 </View>
             </View>
         </View>

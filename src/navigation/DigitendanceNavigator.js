@@ -17,6 +17,7 @@ import ViewAllTestTakenScreen from '../screens/ViewAllTestTakenScreen';
 import ViewAllWorkshopTakenScreen from '../screens/ViewAllWorkshopTakenScreen';
 import CreateEventStandAloneEnterDetailsScreen from '../screens/CreateEventStandAloneEnterDetailsScreen';
 import CreateEventForClassEnterDetailsScreen from '../screens/CreateEventForClassEnterDetailsScreen';
+import DisplayClassEventQRCodeScreen from '../screens/DisplayClassEventQRCodeScreen';
 
 const RootNavigator = createStackNavigator({
 
@@ -29,10 +30,10 @@ const RootNavigator = createStackNavigator({
     Event: {
         screen: CreateEventScreen,
     },
-    CreateStandAloneEvent:{
+    CreateStandAloneEvent: {
         screen: CreateEventStandAloneEnterDetailsScreen,
     },
-    CreateClassEvent:{
+    CreateClassEvent: {
         screen: CreateEventForClassEnterDetailsScreen,
     },
     ViewAttendanceByDate: {
@@ -47,27 +48,30 @@ const RootNavigator = createStackNavigator({
     ViewAttendanceByStudents: {
         screen: ViewAttendanceByStudentsScreen,
     },
-    ExportAttendance:{
+    ExportAttendance: {
         screen: ExportAttendanceScreen,
     },
-    AllEventsTaken:{
-        screen : AllEventsTakenScreen,
+    AllEventsTaken: {
+        screen: AllEventsTakenScreen,
     },
-    AllLecturesTaken:{
-        screen : ViewAllLecturesTakenScreen,
+    AllLecturesTaken: {
+        screen: ViewAllLecturesTakenScreen,
     },
-    AllTestTaken:{
-        screen : ViewAllTestTakenScreen,
+    AllTestTaken: {
+        screen: ViewAllTestTakenScreen,
     },
-    AllQuizTaken:{
-        screen : ViewAllQuizTakenScreen,
+    AllQuizTaken: {
+        screen: ViewAllQuizTakenScreen,
     },
-    AllWorkshopTaken:{
-        screen : ViewAllWorkshopTakenScreen,
+    AllWorkshopTaken: {
+        screen: ViewAllWorkshopTakenScreen,
     },
+    DisplayClassEventQRCodeScreen: {
+        screen: DisplayClassEventQRCodeScreen,
+    }
 
 }, {
-    defaultNavigationOptions:{
+    defaultNavigationOptions: {
         headerShown: false,
     }
 });

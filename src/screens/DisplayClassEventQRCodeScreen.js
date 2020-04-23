@@ -2,11 +2,15 @@ import React, { useEffect, useState } from 'react';
 // import QRCode from 'react-native-qrcode-svg';
 import * as firebaseWrapper from '../components/firebaseWrapper';
 import store from '../store/store';
-import { View, Text, Alert, StyleSheet, ActivityIndicator, useWindowDimensions } from 'react-native';
+import { View, Text, Alert, StyleSheet, ActivityIndicator, FlatList } from 'react-native';
 import base64 from 'react-native-base64';
 import { Button } from 'native-base';
 import QRCode from 'react-native-qrcode-svg';
-import { FlatList } from 'react-native-gesture-handler';
+// import { FlatList } from 'react-native-gesture-handler';
+import { ToastAndroid } from 'react-native';
+import RNFS from 'react-native-fs';
+import CameraRoll from "@react-native-community/cameraroll";
+import RNFetchBlob from 'rn-fetch-blob';
 
 const DisplayClassEventQRCodeScreen = props => {
 
@@ -15,8 +19,7 @@ const DisplayClassEventQRCodeScreen = props => {
     const [qrGenerated, setQRGenerated] = useState(false);
     const [generating, setGenerating] = useState(false);
     const [flatListData, setFlatListData] = useState([]);
-
-    const [controlUseEffect, setControlUseEffect] = useState(false);
+    const [disableSaveAllQRCodeButton, setDisableSaveAllQRCodeButton] = useState(true);
 
     const eventDetails = store.getState().eventDetails;
 
@@ -65,22 +68,80 @@ const DisplayClassEventQRCodeScreen = props => {
             temp.push({ key: i, value: data[i] });
         }
         setFlatListData(temp);
-        // setGenerating(false);
+        setDisableSaveAllQRCodeButton(false);
     }
 
     const handleSaveAllQRCode = () => {
-        // for (let i in data) {
-        //     console.log(i, data[i].name);
-        //     setQR(<QRCode
-        //         value={data[i]['qrcode']}
-        //         quietZone={10}
-        //         getRef={(ref) => setQRRef(ref)}
-        //     />)
-        // }
-        // setControlUseEffect(!controlUseEffect);
-        // console.log(qrRefs.length);
-        let unique = [...new Set(qrRefs)];
-        console.log(unique.length);
+
+        setDisableSaveAllQRCodeButton(true);
+
+        let result = [];
+        let map = new Map();
+        for (const i of qrRefs) {
+            if (!map.has(i.key)) {
+                map.set(i.key, true);
+                result.push(i);
+            }
+        }
+        qrRefs.filter((item, index) => qrRefs.indexOf(item) === index);
+        console.log(result.length);
+        let path = RNFetchBlob.fs.dirs.PictureDir + `/${className}_${eventDetails.eventDate}`;
+        RNFetchBlob.fs.mkdir(path)
+            .then(() => {
+                result.forEach(qrRef => {
+                    // console.log(qrRef.key);
+                    qrRef.ref.toDataURL(ref => {
+                        let filePath = path + `/${qrRef.key}_${qrRef.name}.png`;
+                        RNFS.writeFile(filePath, ref, 'base64')
+                            .then(success => {
+                                return CameraRoll.saveToCameraRoll(path, 'photo')
+                            })
+                            .catch(err => {
+                                throw new Error(`An error occured while saving file at ${filePath}`);
+                            });
+                    })
+                });
+            })
+            .then(() => ToastAndroid.show(`Saved to path ${path}!`, ToastAndroid.SHORT))
+            .catch(err => Alert.alert('Error', err.message, [{
+                text: 'Overwrite',
+                onPress: () => {
+                    RNFetchBlob.fs.unlink(path)
+                        .then(() => {
+                            RNFetchBlob.fs.mkdir(path)
+                                .then(() => {
+                                    result.forEach(qrRef => {
+                                        // console.log(qrRef.key);
+                                        qrRef.ref.toDataURL(ref => {
+                                            let filePath = path + `/${qrRef.key}_${qrRef.name}.png`;
+                                            RNFS.writeFile(filePath, ref, 'base64')
+                                                .then(success => {
+                                                    return CameraRoll.saveToCameraRoll(path, 'photo')
+                                                })
+                                                .catch(err => {
+                                                    return new Error(`An error occured while saving file at ${filePath}`);
+                                                });
+                                        })
+                                    });
+                                })
+                        })
+                        .then(() => Alert.alert('Files Overwritten successfully'))
+                        .catch(err => ALert.alert('Overwriting Error', err.message));
+
+                },
+            }, {
+                text: 'Cancel',
+                onPress: () => console.log('cancel')
+            }]))
+            
+
+
+        // let path = RNFetchBlob.fs.dirs.PictureDir + `/${className}_${eventDetails.eventDate}`;
+        // RNFetchBlob.fs.mkdir(path)
+        //     .then(() => console.log('first'))
+        //     .then(() => console.log('second'))
+        //     .catch((err) => console.log(err.message))
+
     }
 
     useEffect(() => {
@@ -136,9 +197,12 @@ const DisplayClassEventQRCodeScreen = props => {
                             value={data[itemData.item.key]['qrCode']}
                             quietZone={10}
                             getRef={ref => {
-                                if (!(ref in qrRefs)) {
-                                    qrRefs.push(ref);
-                                }
+                                qrRefs.push({
+                                    key: itemData.item.key,
+                                    name: data[itemData.item.key].name,
+                                    ref: ref
+                                });
+
                             }}
 
                         />
@@ -147,6 +211,7 @@ const DisplayClassEventQRCodeScreen = props => {
             />
             <Button
                 full
+                disabled={disableSaveAllQRCodeButton}
                 onPress={handleSaveAllQRCode}
             >
                 <Text style={{ color: 'white' }}>Save All Code</Text>

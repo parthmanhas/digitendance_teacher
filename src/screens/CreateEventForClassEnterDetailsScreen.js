@@ -65,22 +65,25 @@ const CreateEventScreen = props => {
         var RNFS = require('react-native-fs');
         RNFS.readFile(filePath)
             .then(contents => {
-                setContents(contents);
                 var lines = contents.split('\n');
                 var data = {};
                 data[className] = {};
                 let skip = false;
                 let error = false;
-                lines.every(line => {
+                console.log(lines);
+                for (let line of lines) {
                     if (!skip) {
                         /*
                         Format for class.csv file
                         name,regNo
                         */
-                        if (line.split(',')[0] !== 'name' || line.split(',')[1] !== 'regNo') {
-                            Alert.alert('Uploaded File Not in specified Format. Fomrat = name,regNo');
+                        let [name, regNo] = line.split(',');
+                        name = name.trim();
+                        regNo = regNo.trim();
+                        if (name !== 'name' || regNo !== 'regNo') {
+                            // Alert.alert('Uploaded File Not in specified Format. Heading : name,regNo');
                             error = true;
-                            return false;
+                            throw new Error('Error', 'Uploaded File Not in specified Format. Heading : name,regNo')
                         }
                         skip = true;
                     }
@@ -91,18 +94,25 @@ const CreateEventScreen = props => {
                         name = name.replace(' ', '').replace('/[.#$/\[]]/g', '');
                         data[className][regNum] = {
                             'name': name,
-                            'qrcode': ''
+                            'qrCode': 'not-set'
                         };
                     }
+                }
 
-                });
                 if (!error) {
-                    firebaseWrapper.addClass(data);
-                    setShowModal(false);
-                    Alert.alert('Class has been created');
-                    setDataLoaded(false);
-                    setData();
-                    setClassNames([]);
+                    firebaseWrapper.addClass(data)
+                        .then((result) => {
+                            console.log(result);
+                            setShowModal(false);
+                            Alert.alert('Class has been created');
+                            setDataLoaded(false);
+                            setData();
+                            setClassNames([]);
+                            loadClassData();
+                        })
+                        .catch((err) => {
+                            throw new Error(err);
+                        })
                 }
             })
             .catch(err => Alert.alert(err.message));
@@ -115,23 +125,27 @@ const CreateEventScreen = props => {
         });
     }
 
+    const loadClassData = () => {
+        firebaseWrapper.getAllClass(setDataLoaded)
+            .then((data) => {
+                let temp = [];
+                let j = 0;
+                for (var i in data) {
+                    if (i !== 'init')
+                        temp.push({ key: `${j}`, name: i });
+                    j++;
+                }
+                setClassNames(temp);
+                setDataLoaded(true)
+            })
+            .catch(err => {
+                Alert.alert('Error', err.message)
+            });
+    }
+
     useEffect(() => {
-        if (!dataLoaded) {
-            setData(firebaseWrapper.getAllClass(setData, setDataLoaded));
-        }
-
-        else if (classNames.length === 0) {
-
-            let temp = [];
-            let j = 0;
-            for (var i in data) {
-                if (i !== 'init')
-                    temp.push({ key: `${j}`, name: i });
-                j++;
-            }
-            setClassNames(temp);
-        }
-    }, [dataLoaded, data])
+        loadClassData();
+    }, []);
 
     return (
         <View style={styles.screen}>
@@ -149,7 +163,7 @@ const CreateEventScreen = props => {
                     <View style={styles.listItem}>
                         <Button
                             full
-                            rounded
+                            style={{ backgroundColor: '#00897b', borderRadius: 6 }}
                             onPress={() => {
                                 handleClassButton(itemData.item.name)
                             }}
@@ -162,12 +176,12 @@ const CreateEventScreen = props => {
 
             <Button
                 full
-                rounded
+                style={{ backgroundColor: '#009688', borderRadius: 6 }}
                 onPress={enterClassDetailsModal}
             >
                 <Text style={{ color: 'white', padding: 10, fontSize: 18 }}>Add New Class</Text>
             </Button>
-            <Modal visible={showModal} animationType="fade" style={styles.modal}>
+            <Modal visible={showModal} animationType='slide' style={styles.modal}>
                 <View style={styles.displayFileContainer}>
                     <Text style={styles.text}>{uploadedFileName}</Text>
 
@@ -183,26 +197,26 @@ const CreateEventScreen = props => {
                     <Button
                         full
                         onPress={handleSelectFile}
-                        style={styles.button}
+                        style={{ ...styles.button, backgroundColor: '#00796b', borderRadius: 6 }}
                     >
-                        <Text style={{ padding: 19, color: 'white' }}>Select File</Text>
+                        <Text style={{ padding: 19, color: 'white', fontSize: 18 }}>Select File</Text>
                     </Button>
                     {/* </View> */}
                     {/* <View style={styles.bottom}> */}
                     <Button
                         full
                         onPress={handleUploadCSV}
-                        style={styles.button}
+                        style={!(fileSelected && className !== '') ? { ...styles.button, backgroundColor: '#bdbdbd', borderRadius: 6 } : { ...styles.button, backgroundColor: '#009688', borderRadius: 6 }}
                         disabled={!(fileSelected && className !== '')}
                     >
-                        <Text style={{ padding: 19, color: 'white' }}>Upload</Text>
+                        <Text style={{ padding: 19, color: 'white', fontSize: 18 }}>Upload</Text>
                     </Button>
                     <Button
                         full
                         onPress={closeModal}
-                        style={styles.button}
+                        style={{ ...styles.button, backgroundColor: '#009688', borderRadius: 6 }}
                     >
-                        <Text style={{ padding: 19, color: 'white' }}>Close</Text>
+                        <Text style={{ padding: 19, color: 'white', fontSize: 18 }}>Close</Text>
                     </Button>
                     {/* </View> */}
                 </View>
@@ -232,7 +246,8 @@ const styles = StyleSheet.create({
     },
     modal: {
         flex: 1,
-        alignItems: 'center'
+        alignItems: 'center',
+        backgroundColor: colors.BACKGROUND
     },
     bottom: {
         flex: 1,

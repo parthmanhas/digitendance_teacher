@@ -43,7 +43,7 @@ const ViewAllLectureTakenScreen = props => {
                     <TouchableOpacity onPress={() => {
                         setActivateSelectAllOption(false);
                         selectedItems.forEach(element => {
-                           console.log(element);
+                            console.log(element);
                         });
                     }}>
                         <Text style={{ fontSize: 18, paddingVertical: 5 }}>Cancel Select All</Text>
@@ -60,6 +60,7 @@ const ViewAllLectureTakenScreen = props => {
                     <View style={styles.listItem}>
                         <Button
                             full
+                            style={{ backgroundColor: '#009688', borderRadius: 6 }}
                             onPress={() => {
                                 if (activateSelectAllOption) {
                                     itemData.item.selected = !itemData.item.selected;

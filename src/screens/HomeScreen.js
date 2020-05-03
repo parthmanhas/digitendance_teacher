@@ -24,23 +24,6 @@ const HomeScreen = props => {
 
     }
 
-    const signUpUser = (email, password) => {
-        //display error when something goes wrong
-        setShowActivityIndicator(true);
-        try {
-            if (password.length < 6) {
-                Alert.alert("Please enter more than 6 characters");
-                setShowActivityIndicator(false);
-                return;
-            }
-            firebaseWrapper.SignUp(email, password, props, setShowActivityIndicator);
-
-        }
-        catch (error) {
-            console.log(error.toString());
-        }
-    }
-
     return (
         <Container style={styles.screen}>
             <View style={styles.logo}>
@@ -68,23 +51,22 @@ const HomeScreen = props => {
                 <ActivityIndicator style={{ margin: 10 }} animating={showActivityIndicator} />
                 <Button
                     full
-                    success
                     onPress={() => loginUser(email, password)}
                     disabled={showActivityIndicator}
-                    style={{ ...styles.button }}
+                    style={showActivityIndicator ? { borderRadius: 6, backgroundColor: '#bdbdbd' } : { borderRadius: 6, backgroundColor: '#00897b' }}
                 >
-                    <Text style={{ color: 'white' }}>Login</Text>
+                    <Text style={{ color: 'white', fontSize: 18 }}>Login</Text>
                 </Button>
 
 
                 <Button
-                    onPress={() => signUpUser(email, password)}
-                    style={{ ...styles.button, marginTop: 10 }}
+                    onPress={() => props.navigation.navigate('SignUpScreen')}
+                    style={showActivityIndicator ? { borderRadius: 6, marginTop: 10, backgroundColor: '#bdbdbd' } : { borderRadius: 6, marginTop: 10, backgroundColor: '#4db6ac' }}
                     full
                     primary
                     disabled={showActivityIndicator}
                 >
-                    <Text style={{ color: 'white' }}>Sign Up</Text>
+                    <Text style={{ color: 'white', fontSize: 18 }}>Sign Up</Text>
                 </Button>
             </Form>
         </Container>

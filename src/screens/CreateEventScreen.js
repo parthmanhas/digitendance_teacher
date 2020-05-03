@@ -10,16 +10,16 @@ const CreateEventScreen = props => {
             <Button
                 full
                 success
-                style={{ ...styles.button, backgroundColor: colors.BUTTON_DARK }}
+                style={{ ...styles.button, backgroundColor: '#009688' }}
                 onPress={() => props.navigation.navigate('CreateStandAloneEvent')}>
-                <Text style={{ color: 'white' }}>Create StandAlone Event</Text>
+                <Text style={{ color: 'white', fontSize: 18 }}>Create StandAlone Event</Text>
             </Button>
             <Button
                 full
                 success
-                style={{ ...styles.button, backgroundColor: colors.BUTTON_DARK }}
+                style={{ ...styles.button, backgroundColor: '#009688' }}
                 onPress={() => props.navigation.navigate('CreateClassEvent')}>
-                <Text style={{ color: 'white' }}>Create Class Event</Text>
+                <Text style={{ color: 'white', fontSize: 18 }}>Create Class Event</Text>
             </Button>
         </View>
     );
@@ -39,7 +39,6 @@ const styles = StyleSheet.create({
     buttonContainer: {
         flex: 1,
         padding: 10,
-        margin: 10,
         justifyContent: 'center',
     },
 })

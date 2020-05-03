@@ -9,32 +9,32 @@ const TeacherProfileScreen = props => {
     //create event button
     //view attendance
 
-    
+
     // const username = props.navigation.getParam('email', 'Teacher').split('@')[0];
     const username = store.getState().username.username;
     console.log(username);
 
     return (
-        <Container style={styles.screen}>
-            <View style={styles.informationDisplayContainer}>
-                <Text style={{ fontSize: 22, fontWeight: 'bold' }}>WELCOME {username}</Text>
-            </View>
+        <View style={styles.screen}>
             <View style={styles.buttonContainer}>
+                <View style={styles.textContainer}>
+                    <Text style={{ fontSize: 22, fontWeight: 'bold' }}>WELCOME {username}</Text>
+                </View>
                 <Button
                     full
                     success
-                    style={{ ...styles.button, backgroundColor: colors.BUTTON_DARK }}
+                    style={{ ...styles.button, backgroundColor: '#009688' }}
                     onPress={() => props.navigation.navigate('Event')}>
-                    <Text style={{ color: 'white' }}>Create Event</Text>
+                    <Text style={{ color: 'white', fontSize: 18 }}>Create Event</Text>
                 </Button>
                 <Button
                     full
                     success
-                    style={{ ...styles.button, backgroundColor: colors.BUTTON_DARK }}
-                    onPress={() => props.navigation.navigate('ViewAttendanceByDate', { username: username })}>
-                    <Text style={{ color: 'white' }}>View Attendance</Text>
+                    style={{ ...styles.button, backgroundColor: '#009688' }}
+                    onPress={() => props.navigation.navigate('ViewAttendanceByEventScreen', { username: username })}>
+                    <Text style={{ color: 'white', fontSize: 18 }}>View Attendance</Text>
                 </Button>
-                <Button
+                {/* <Button
                     full
                     style={{ ...styles.button, backgroundColor: colors.BUTTON_DARK }}
                     onPress={() => props.navigation.navigate('ExportAttendance', { username: username })}
@@ -47,10 +47,10 @@ const TeacherProfileScreen = props => {
                     onPress={() => props.navigation.navigate('AllEventsTaken')}
                 >
                     <Text style={{ color: 'white' }}>View All Events Taken</Text>
-                </Button>
+                </Button> */}
             </View>
 
-        </Container>
+        </View>
     );
 }
 
@@ -62,18 +62,15 @@ const styles = StyleSheet.create({
     },
     buttonContainer: {
         flex: 1,
-        padding: 10,
-        margin: 10,
         justifyContent: 'center',
-    },
-    informationDisplayContainer: {
-        margin: 10,
-        padding: 10,
-        alignItems: 'center',
     },
     button: {
         margin: 10,
         borderRadius: 6
+    },
+    textContainer:{        
+        alignItems: 'center',
+        paddingVertical: 20
     }
 });
 

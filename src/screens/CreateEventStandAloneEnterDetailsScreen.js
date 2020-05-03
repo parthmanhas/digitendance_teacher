@@ -1,15 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Button, Picker, TextInput, Modal } from 'react-native';
+import { View, Text, StyleSheet, Picker, TextInput, Modal, Alert, ActivityIndicator } from 'react-native';
 import EventDisplayModal from '../components/EventDisplayModal';
 import ActiveDisplayModal from '../components/ActiveDisplayModal';
 import store from '../store/store';
 import { setEventDetails } from '../store/actions/eventDetails';
+import * as firebase from 'firebase';
+import * as firebaseWrapper from '../components/firebaseWrapper';
+import { Button } from 'native-base';
+import { set } from 'react-native-reanimated';
+
+
 const CreateEventStandAloneEnterDetailsScreen = props => {
 
     const username = props.navigation.getParam('email', 'Teacher');
 
-    const className = props.navigation.getParam('className', undefined);
-    
+    const className = props.navigation.getParam('className', 'none');
+
     const [pickerSelection, setPickerSelection] = useState('Select Event');
 
     const [renderModal, setRenderModal] = useState();
@@ -22,6 +28,7 @@ const CreateEventStandAloneEnterDetailsScreen = props => {
     const [disableResetButton, setDisableResetButton] = useState(true);
     const [disableGenerateButton, setdisableGenerateButton] = useState(true);
     const [displayModal, setDisplayModal] = useState(ActiveDisplayModal);
+    const [activityIndicator, setActivityIndicator] = useState(false);
 
     const [eventType, setEventType] = useState();
 
@@ -68,7 +75,9 @@ const CreateEventStandAloneEnterDetailsScreen = props => {
     }
 
     const handleGenerateQRCode = () => {
-
+        setdisableGenerateButton(true);
+        setDisableResetButton(true);
+        setActivityIndicator(true);
         let eventDetails = {
             eventName: newEventName,
             eventDate: newEventDate,
@@ -78,63 +87,139 @@ const CreateEventStandAloneEnterDetailsScreen = props => {
             eventType: eventType
         }
 
-        let dummyEventDetails = {
-            eventName: 'dummy lecture event',
-            eventDate: new Date().toString().substr(0, 15),
-            eventSecret: 'none',
-            eventTime: 'dummyTime',
-            expiryTime: 'dummyExpiryTime',
-            eventType: 'lecture'
-        }
-
-        store.dispatch(setEventDetails(dummyEventDetails));
+        store.dispatch(setEventDetails(eventDetails));
         // console.log(store.getState());        
 
-        if (className === undefined)
-            props.navigation.navigate('QRCodeGenerated');
-        else
-            props.navigation.navigate('DisplayClassEventQRCodeScreen', {
-                className: className
-            });
+        if (className === 'none')
+            props.navigation.navigate('DisplayStandAloneEventQRCodeScreen');
+        else {
+            firebaseWrapper.AddEvent()
+                .then(() => {
+                    const e = store.getState().eventDetails;
+                    const eventName = e.eventName;
+                    const eventDate = e.eventDate;
+                    const eventSecret = e.eventSecret;
+                    const eventTime = e.eventTime;
+                    const expiryTime = e.expiryTime;
+                    const eventType = e.eventType;
+                    let username = firebase.auth().currentUser.email.split('@')[0];
+                    const path = `${username}/${eventType}/${eventDate}/${eventName}`;
 
+                    let data;
+                    firebase.database().ref(`${username}/allClasses/${className}`).once('value')
+                        .then(snap => {
+                            data = snap.val();
+                            // Object.keys(data).map(key => {
+                            //     let obj = {};
+                            //     obj[key] = { ...data[key] };
+                            //     firebase.database().ref(path).push().set(obj);
+                            // })
+                            firebase.database().ref(path).update({ 'attendance': data })
+                                .then(() => {
+                                    props.navigation.navigate('DisplayClassEventQRCodeScreen', {
+                                        className: className
+                                    });
+                                })
+                                .catch(err => err);
+                        })
+                        .catch(err => {
+                            Alert.alert('Error', err.message);
+                            setdisableGenerateButton(false);
+                        });
+
+
+                })
+        }
     }
-
     useEffect(() => {
         checkValidInput();
     }, [newEventName, newEventDate, newEventSecret, newEventTime]);
 
     return (
         <View style={styles.screen}>
-            <Text style={{ margin: 15, fontSize: 22, fontWeight: 'bold', marginBottom: 30 }}>CREATE EVENT</Text>
-            <Picker
-                selectedValue={pickerSelection}
-                style={styles.picker}
-                onValueChange={(itemValue, itemIndex) => {
-                    setPickerSelection(itemValue);
-                    // displayRenderModal(itemValue);
-                    const modal = { ...ActiveDisplayModal };
-                    modal[itemValue] = true;
-                    setDisplayModal(modal);
-                }}>
-                <Picker.Item label="Select Event" value="" />
-                <Picker.Item label="Lecture" value="lecture" />
-                <Picker.Item label="Quiz" value="quiz" />
-                <Picker.Item label="Test" value="test" />
-                <Picker.Item label="Work Shop" value="workshop" />
-            </Picker>
-            <View style={styles.displayInformationContainer}>
-                <Text>{newEventName ? `Event Name : ${newEventName}` : ''}</Text>
-                <Text>{newEventDate ? `Event Date : ${newEventDate}` : ''}</Text>
-                <Text>{newEventTime ? `Event Time : ${newEventTime}` : ''}</Text>
-                <Text>{newEventSecret ? `Event Secret : ${newEventSecret}` : ''}</Text>
-                <Text>{newEventExpiryTime ? `QR Code Expiry Time : ${newEventExpiryTime}` : ''}</Text>
-            </View>
-            <View style={styles.displayInformationContainer}>
-                <Text>{newEventName ? `Event Name : ${newEventName}` : 'dummy'}</Text>
-                <Text>{newEventDate ? `Event Date : ${newEventDate}` : 'dummy'}</Text>
-                <Text>{newEventTime ? `Event Time : ${newEventTime}` : 'dummy'}</Text>
-                <Text>{newEventSecret ? `Event Secret : ${newEventSecret}` : 'dummy'}</Text>
-                <Text>{newEventExpiryTime ? `QR Code Expiry Time : ${newEventExpiryTime}` : 'dummy'}</Text>
+            <View style={styles.container}>
+                <View style={styles.heading}>
+                    <Text style={{ margin: 15, fontSize: 22, fontWeight: 'bold', marginBottom: 30, alignItems: 'center' }}>CREATE EVENT</Text>
+                </View>
+                <View style={styles.pickerContainer}>
+                    <Picker
+                        mode="dropdown"
+                        selectedValue={pickerSelection}
+                        style={styles.picker}
+                        onValueChange={(itemValue, itemIndex) => {
+                            setPickerSelection(itemValue);
+                            // displayRenderModal(itemValue);
+                            const modal = { ...ActiveDisplayModal };
+                            modal[itemValue] = true;
+                            setDisplayModal(modal);
+                        }}>
+                        <Picker.Item label="Select Event" value="" />
+                        <Picker.Item label="Lecture" value="lecture" />
+                        <Picker.Item label="Quiz" value="quiz" />
+                        <Picker.Item label="Test" value="test" />
+                        <Picker.Item label="Work Shop" value="workshop" />
+                    </Picker>
+                </View>
+                <View style={styles.displayInformationContainer}>
+                    <Text>{newEventName ? `Event Name : ${newEventName}` : ''}</Text>
+                    <Text>{newEventDate ? `Event Date : ${newEventDate}` : ''}</Text>
+                    <Text>{newEventTime ? `Event Time : ${newEventTime}` : ''}</Text>
+                    <Text>{newEventSecret ? `Event Secret : ${newEventSecret}` : ''}</Text>
+                    <Text>{newEventExpiryTime ? `QR Code Expiry Time : ${newEventExpiryTime}` : ''}</Text>
+                </View>
+                <ActivityIndicator animating={activityIndicator}/>
+                <View style={styles.buttonContainer}>
+                    <View style={styles.button}>
+                        {/* <Button
+                                disabled={disableResetButton}
+                                title='Reset'
+                                color='red'
+                                onPress={handleResetButton} /> */}
+                        <Button
+                            full
+                            danger
+                            disabled={disableResetButton}
+                            onPress={handleResetButton}
+                            style={disableResetButton ? { ...styles.button, backgroundColor: '#bdbdbd' } : { ...styles.button, backgroundColor: '#ef5350' }}
+                        >
+                            <Text style={{ color: 'white', fontSize: 18 }}>RESET</Text>
+                        </Button>
+                    </View>
+                    <View style={styles.button}>
+                        {/* <Button title="GENERATE QR CODE" disabled={disableGenerateButton} onPress={handleGenerateQRCode} /> */}
+                        <Button
+                            full
+                            disabled={disableGenerateButton}
+                            onPress={handleGenerateQRCode}
+                            style={disableGenerateButton ? { ...styles.button, backgroundColor: '#bdbdbd' } : { ...styles.button, backgroundColor: '#009688' }}
+                        >
+                            <Text style={{ color: 'white', fontSize: 18 }}>GENERATE QR CODE</Text>
+                        </Button>
+                    </View>
+                    {/* <View style={styles.button}>
+                        <Button title="GENERATE DUMMY QR CODE" onPress={() => {
+                            let eventDetails = {
+                                eventName: 'dummy',
+                                eventDate: 'dummy',
+                                eventSecret: 'dummy',
+                                eventTime: 'dummy',
+                                expiryTime: 'dummy',
+                                eventType: 'dummy'
+                            }
+    
+                            store.dispatch(setEventDetails(eventDetails));
+                            // console.log(store.getState());        
+    
+                            if (className === undefined)
+                                props.navigation.navigate('QRCodeGenerated');
+                            else
+                                props.navigation.navigate('DisplayClassEventQRCodeScreen', {
+                                    className: className
+                                });
+                        }} />
+                    </View> */}
+
+                </View>
             </View>
             {/* LECTURE OPTIONS */}
             <EventDisplayModal
@@ -186,36 +271,26 @@ const CreateEventStandAloneEnterDetailsScreen = props => {
                 onButtonPress={onEventModalDoneButtonPress}
                 setEventType={setEventType}
                 eventType='workshop' />
-            <View style={styles.buttonContainer}>
-                <View style={styles.button}>
-                    <Button style={{ margin: 10 }}
-                        disabled={disableResetButton}
-                        title='Reset'
-                        color='red'
-                        onPress={handleResetButton} />
-                </View>
-                <View style={styles.button}>
-                    <Button title="GENERATE QR CODE" disabled={disableGenerateButton} onPress={handleGenerateQRCode} />
-                </View>
-                <View style={styles.button}>
-                    <Button title="DumMy GENERATE QR CODE" disabled={!disableGenerateButton} onPress={handleGenerateQRCode} />
-                </View>
-            </View>
+
         </View>
     );
-};
+}
+
+
+
 
 const styles = StyleSheet.create({
     screen: {
         flex: 1,
-        alignItems: 'center',
-        padding: 20,
+        padding: 20
     },
     picker: {
-        height: 50,
-        width: 200,
-        alignItems: 'center',
-        justifyContent: 'center'
+        flexDirection: 'row'
+    },
+    pickerContainer: {
+        alignContent: 'center',
+        backgroundColor: '#b2dfdb',
+        marginHorizontal: '10%'
     },
     inputContainer: {
         backgroundColor: '#efefef',
@@ -226,16 +301,24 @@ const styles = StyleSheet.create({
     },
 
     displayInformationContainer: {
-        padding: 20,
         margin: 20,
+        paddingLeft: '25%',
+        alignItems: 'flex-start'
 
     },
     buttonContainer: {
-        padding: 20,
-        margin: 10
+
     },
     button: {
-        margin: 5
+        borderRadius: 5,
+        marginVertical: 3
+    },
+    container: {
+        flex: 1,
+        justifyContent: 'center'
+    },
+    heading: {
+        alignItems: 'center'
     }
 });
 

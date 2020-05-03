@@ -6,8 +6,8 @@ import HomeScreen from '../screens/HomeScreen';
 import DisplayStandAloneEventQRCodeScreen from '../screens/DisplayStandAloneEventQRCodeScreen';
 import CreateEventScreen from '../screens/CreateEventScreen';
 import TeacherProfileScreen from '../screens/TeacherProfileScreen';
-import ViewAttendanceByDateScreen from '../screens/ViewAttendanceByDateScreen';
-import ViewAttendanceByLectureScreen from '../screens/ViewAttendanceByLectureScreen';
+import ViewAttendanceByEventScreen from '../screens/ViewAttendanceByEventScreen';
+import ViewAttendanceBySubEventScreen from '../screens/ViewAttendanceBySubEventScreen';
 import ViewAttendanceByStudentsScreen from '../screens/ViewAttendanceByStudentsScreen';
 import ExportAttendanceScreen from '../screens/ExportAttendanceScreen';
 import AllEventsTakenScreen from '../screens/AllEventsTakenScreen';
@@ -18,6 +18,7 @@ import ViewAllWorkshopTakenScreen from '../screens/ViewAllWorkshopTakenScreen';
 import CreateEventStandAloneEnterDetailsScreen from '../screens/CreateEventStandAloneEnterDetailsScreen';
 import CreateEventForClassEnterDetailsScreen from '../screens/CreateEventForClassEnterDetailsScreen';
 import DisplayClassEventQRCodeScreen from '../screens/DisplayClassEventQRCodeScreen';
+import SignUpScreen from '../screens/SignUpScreen';
 
 const RootNavigator = createStackNavigator({
 
@@ -26,6 +27,9 @@ const RootNavigator = createStackNavigator({
     },
     Teacher: {
         screen: TeacherProfileScreen,
+    },
+    SignUpScreen:{
+        screen: SignUpScreen,
     },
     Event: {
         screen: CreateEventScreen,
@@ -36,14 +40,14 @@ const RootNavigator = createStackNavigator({
     CreateClassEvent: {
         screen: CreateEventForClassEnterDetailsScreen,
     },
-    ViewAttendanceByDate: {
-        screen: ViewAttendanceByDateScreen,
+    ViewAttendanceByEventScreen: {
+        screen: ViewAttendanceByEventScreen,
     },
-    QRCodeGenerated: {
+    DisplayStandAloneEventQRCodeScreen: {
         screen: DisplayStandAloneEventQRCodeScreen,
     },
-    ViewAttendanceByLecture: {
-        screen: ViewAttendanceByLectureScreen,
+    ViewAttendanceBySubEventScreen: {
+        screen: ViewAttendanceBySubEventScreen,
     },
     ViewAttendanceByStudents: {
         screen: ViewAttendanceByStudentsScreen,

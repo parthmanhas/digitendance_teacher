@@ -82,7 +82,7 @@ const EventDisplayModal = props => {
             style={styles.modal}
             visible={props.displayOption}
             onRequestClose={props.onButtonPress}
-            animationType='fade'>
+            animationType='slide'>
             <View style={styles.content}>
                 <View style={{ margin: 15 }}>
                     <Text style={{ fontSize: 25, fontWeight: 'bold' }}>{props.title} Options</Text>
@@ -101,7 +101,7 @@ const EventDisplayModal = props => {
                 <TouchableOpacity onPress={selectTime}>
                     <Text style={{ fontSize: modalFontSize }}>{eventTime ? eventTime.toString() : "Select Time"}</Text>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={selectExpiryTime}>
+                <TouchableOpacity style={{ marginTop: 10 }} onPress={selectExpiryTime}>
                     <Text style={{ fontSize: modalFontSize }}>{expiryTime ? expiryTime.toString() : "Select QR Expiry Time"}</Text>
                 </TouchableOpacity>
                 <DateTimePickerModal
@@ -109,20 +109,23 @@ const EventDisplayModal = props => {
                     mode="date"
                     onConfirm={handleDateConfirm}
                     onCancel={handleDateCancel}
+                    date={new Date()}
                 />
-                
+
                 <DateTimePickerModal
                     isVisible={displayTimePicker}
                     mode="time"
                     onConfirm={handleTimeConfirm}
                     onCancel={handleTimeCancel}
+                    date={new Date()}
                 />
-                
+
                 <DateTimePickerModal
                     isVisible={displayExpiryTimePicker}
                     mode="time"
                     onConfirm={handleExpiryTimeConfirm}
                     onCancel={handleExpiryTimeCancel}
+                    date={new Date()}
                 />
 
                 <TextInput
@@ -137,10 +140,10 @@ const EventDisplayModal = props => {
                 <View>
                     <Button
                         full
-                        style={{ ...styles.button, backgroundColor: '#2196F3' }}
+                        style={{ ...styles.button, backgroundColor: '#009688' }}
                         onPress={handleModalDoneButton}
                     >
-                        <Text style={{ color: 'white' }}>DONE</Text>
+                        <Text style={{ color: 'white', fontSize: 18 }}>DONE</Text>
                     </Button>
                 </View>
 
@@ -148,18 +151,18 @@ const EventDisplayModal = props => {
                     <Button
                         full
                         warning
-                        style={{ ...styles.button, width: '50%', marginHorizontal: 5 }}
+                        style={{ ...styles.button, width: '50%', marginHorizontal: 5, backgroundColor: '#26a69a' }}
                         onPress={props.onButtonPress}
                     >
-                        <Text style={{ color: 'white' }} >CLOSE</Text>
+                        <Text style={{ color: 'white', fontSize: 18 }} >CLOSE</Text>
                     </Button>
                     <Button
                         full
                         danger
-                        style={{ ...styles.button, width: '50%', marginHorizontal: 5 }}
+                        style={{ ...styles.button, width: '50%', marginHorizontal: 5, backgroundColor: '#ef5350' }}
                         onPress={handleResetButton}
                     >
-                        <Text style={{ color: 'white' }} >RESET</Text>
+                        <Text style={{ color: 'white', fontSize: 18 }} >RESET</Text>
                     </Button>
                 </View>
 

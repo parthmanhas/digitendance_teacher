@@ -3,10 +3,12 @@ import { View, StyleSheet, Text, FlatList, ActivityIndicator } from 'react-nativ
 import { Button } from 'native-base';
 import * as firebaseWrapper from '../components/firebaseWrapper';
 
-const ViewAttendanceByLectureScreen = props => {
+const ViewAttendanceBySubEventScreen = props => {
 
-    const selectedDate = props.navigation.getParam('date', undefined);
-    const username = props.navigation.getParam('username', undefined);
+    // const selectedDate = props.navigation.getParam('date', undefined);
+    // const username = props.navigation.getParam('username', undefined);
+
+    const eventName = props.navigation.getParam('eventName', undefined);
 
     const [data, setData] = useState();
     const [dataLoaded, setDataLoaded] = useState(false);
@@ -18,13 +20,28 @@ const ViewAttendanceByLectureScreen = props => {
 
     useEffect(() => {
         if (!dataLoaded) {
-            firebaseWrapper.ViewAttendanceByLecture(username, selectedDate, setData, setDataLoaded);
+            firebaseWrapper.ViewAttendanceBySubEvent(selectedDate)
+                .then((data) => {
+                    let tmp = [];
+                    let j = 0;
+                    Object.entries(data).forEach(([k, v]) => {
+                        tmp.push({ key: `${j}`, eventName: k });
+                        j++;
+                    })
+                    tmp.sort();
+                    setSubEvents(tmp);
+                    setDataLoaded(true);
+                })
+                .catch(err => {
+                    throw new Error('error', err.message);
+                })
+
         }
         else {
             let j = 0;
             let getData = [];
             for (let i in data) {
-                getData.push({key: `${j}`, lectureName: i});
+                getData.push({ key: `${j}`, lectureName: i });
                 j++;
             }
             setLectures(getData);
@@ -74,4 +91,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default ViewAttendanceByLectureScreen;
+export default ViewAttendanceBySubEventScreen;

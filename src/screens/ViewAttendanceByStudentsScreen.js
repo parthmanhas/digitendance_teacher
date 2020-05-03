@@ -87,7 +87,7 @@ const ViewAttendanceByStudentsScreen = props => {
         <View style={styles.screen}>
             <Modal
                 visible={displayFileSaveOptions}
-                animationType='fade'
+                animationType='silde'
                 style={styles.modal}
             >
                 <View style={{ padding: 50 }}>

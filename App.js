@@ -14,7 +14,7 @@ import { setLocation } from './src/store/actions/location';
 import { PermissionsAndroid } from 'react-native';
 import { Text, Alert } from 'react-native';
 import store from './src/store/store';
-
+console.disableYellowBox = true;
 const App: () => React$Node = () => {
 
   const [access, setAccess] = useState(false);

@@ -12,13 +12,13 @@ const TeacherProfileScreen = props => {
 
     // const username = props.navigation.getParam('email', 'Teacher').split('@')[0];
     const username = store.getState().username.username;
-    console.log(username);
+    
 
     return (
         <View style={styles.screen}>
             <View style={styles.buttonContainer}>
                 <View style={styles.textContainer}>
-                    <Text style={{ fontSize: 22, fontWeight: 'bold' }}>WELCOME {username}</Text>
+                    <Text style={{ fontSize: 22, fontWeight: 'bold' }}>Welcome {username}</Text>
                 </View>
                 <Button
                     full

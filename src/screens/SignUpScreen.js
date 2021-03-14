@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, Text, Alert, YellowBox, ActivityIndicator } from 'react-native';
-import { Container, Content, Header, Form, Input, Item, Button, Label, Spinner, Card, CardItem, Body } from 'native-base'
+import { View, StyleSheet, Text, Alert, ActivityIndicator } from 'react-native';
+import { Container, Content, Header, Form, Input, Item, Button, Label, Card, CardItem, Body } from 'native-base'
 import * as firebaseWrapper from '../components/firebaseWrapper';
 
 const SignUpScreen = props => {

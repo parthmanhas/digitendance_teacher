@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react';
 import * as firebaseWrapper from '../components/firebaseWrapper';
 import store from '../store/store';
 import { View, Text, Alert, StyleSheet, ActivityIndicator, FlatList } from 'react-native';
-import base64 from 'react-native-base64';
 import { Button } from 'native-base';
 import QRCode from 'react-native-qrcode-svg';
 // import { FlatList } from 'react-native-gesture-handler';
@@ -16,7 +15,6 @@ import CryptoJS from "react-native-crypto-js";
 import { Card } from 'react-native-shadow-cards';
 
 const DisplayClassEventQRCodeScreen = props => {
-
     const [dataLoaded, setDataLoaded] = useState(false);
     const [data, setData] = useState();
     const [qrGenerated, setQRGenerated] = useState(false);

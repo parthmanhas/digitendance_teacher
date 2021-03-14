@@ -2,12 +2,10 @@ import { Alert } from 'react-native';
 import * as firebase from 'firebase';
 import store from '../store/store';
 import { setUsername } from '../store/actions/username';
-import { setClassDetails } from '../store/actions/classDetails';
-import Toast from 'react-native-simple-toast';
 
 const BASE_PATH = '';
 
-export function Login(email = 'teacher2@gmail.com', password = 'teacher2', props, setShowActivityIndicator) {
+export function Login(email, password, props, setShowActivityIndicator) {
     // email = 'teacher2@gmail.com';
     // password = 'teacher2';
 
